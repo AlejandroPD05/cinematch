@@ -1,6 +1,6 @@
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 const IMG_BASE = 'https://image.tmdb.org/t/p/w500';
-const CACHE_KEY = 'cinematch_posters_v7';
+const CACHE_KEY = 'cinematch_posters_v8';
 const MAX_PARALELAS = 4;
 
 /**
@@ -25,6 +25,7 @@ const OVERRIDES = {
 
   'ice age 5': { q: 'Ice Age: Collision Course', year: 2016 },
   mowgli: { q: 'Mowgli: Legend of the Jungle', year: 2018 },
+  'del reves': { q: 'Inside Out', year: 2015 },
   'del reves 2': { q: 'Inside Out 2', year: 2024 },
   'detective pikachu': { q: 'Pokémon Detective Pikachu', year: 2019 },
   'hotel transilvania 3': { q: 'Hotel Transylvania 3: Summer Vacation', year: 2018 },
@@ -32,6 +33,15 @@ const OVERRIDES = {
   'la sirenita': { q: 'The Little Mermaid', year: 1989 },
   'la sirenita 1': { q: 'The Little Mermaid', year: 1989 },
   'la sirenita 3': { q: "The Little Mermaid: Ariel's Beginning", year: 2008 },
+
+  'las guerreras kpop': { q: 'KPop Demon Hunters', year: 2025 },
+  'mamma mia 2': { q: 'Mamma Mia! Here We Go Again', year: 2018 },
+  'tod y tobby': { q: 'The Fox and the Hound', year: 1981 },
+  'tod y tobby 2': { q: 'The Fox and the Hound 2', year: 2006 },
+  'el libro de la selva la': { q: 'The Jungle Book', year: 2016 },
+  'el libro de la selva live action': { q: 'The Jungle Book', year: 2016 },
+  'barbie princesa de las hadas': { q: 'Barbie: Mariposa & the Fairy Princess', year: 2013 },
+  'barbie popstars': { q: 'Barbie: The Princess & the Popstar', year: 2012 },
 };
 
 // "El Diario de Noa!" → "el diario de noa"
