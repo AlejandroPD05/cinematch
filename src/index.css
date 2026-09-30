@@ -1,0 +1,104 @@
+@import 'tailwindcss';
+
+/* ─────────────── Tokens de diseño ─────────────── */
+@theme {
+  --color-void: #050505;
+  --color-ink-900: #080b09;
+  --color-ink-800: #0d120f;
+  --color-ink-700: #141b17;
+  --color-ink-600: #1d2621;
+  --color-line: rgb(255 255 255 / 0.08);
+
+  --color-brand: #00d26a;
+  --color-brand-bright: #00ff88;
+  --color-brand-deep: #00552b;
+
+  --color-fg: #e9f1ec;
+  --color-muted: #8d9a93;
+  --color-faint: #5b6660;
+
+  --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --font-sans: 'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+
+/* ─────────────── Base ─────────────── */
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: rgb(0 210 106 / 0.35);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-bright);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  select option {
+    background: var(--color-ink-800);
+    color: var(--color-fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* ─────────────── Utilidades propias ─────────────── */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Textura de "proyección": viñeta + grano muy sutil detrás de toda la app */
+@utility screen-glow {
+  background:
+    radial-gradient(1200px 500px at 50% -120px, rgb(0 210 106 / 0.1), transparent 70%),
+    radial-gradient(800px 400px at 100% 0%, rgb(0 255 136 / 0.04), transparent 70%);
+}
+
+/* Perforaciones de película usadas como separador */
+@utility film-edge {
+  background-image: radial-gradient(circle at center, rgb(255 255 255 / 0.1) 1.5px, transparent 2px);
+  background-size: 14px 6px;
+  background-repeat: repeat-x;
+}
+
+/* Números de nota con cifras tabulares */
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
