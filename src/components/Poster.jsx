@@ -1,5 +1,6 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { Clapperboard } from 'lucide-react';
+import { obtenerPoster } from '../lib/tmdb.js';
 
 /** Placeholder cuando no hay carátula o la imagen falla. Nunca se ve una imagen rota. */
 export function PosterPlaceholder({ title, compact = false }) {
@@ -27,52 +28,82 @@ export function PosterPlaceholder({ title, compact = false }) {
 }
 
 /**
- * Carátula con carga diferida, fundido al cargar y fallback automático.
- * La URL NO es la identidad de la película: si falla, la película sigue ahí.
+ * Orden: carátula del Sheets → (si falla) póster de TMDB → placeholder.
+ * stage: 'sheet' | 'tmdb' | 'failed'
  */
-function Poster({ src, title, eager = false, compact = false, className = '' }) {
-  // El estado va ligado a la URL: si la URL cambia, vuelve a 'loading' sin efectos extra.
-  const [result, setResult] = useState({ src: null, status: 'loading' });
-  const status = !src ? 'error' : result.src === src ? result.status : 'loading';
+function PosterInner({ src, title, eager = false, compact = false, className = '' }) {
+  const [stage, setStage] = useState(src ? 'sheet' : 'tmdb');
+  const [tmdbUrl, setTmdbUrl] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
-  const markLoaded = useCallback(() => setResult({ src, status: 'loaded' }), [src]);
-  const markFailed = useCallback(() => setResult({ src, status: 'error' }), [src]);
+  // Solo busca en TMDB cuando la carátula del Sheets falta o ha fallado.
+  useEffect(() => {
+    if (stage !== 'tmdb') return undefined;
+    let cancelled = false;
+    obtenerPoster(title).then((url) => {
+      if (cancelled) return;
+      if (url) setTmdbUrl(url);
+      else setStage('failed');
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [stage, title]);
+
+  const finalSrc = stage === 'sheet' ? src : stage === 'tmdb' ? tmdbUrl : null;
+
+  const handleLoad = useCallback(() => setLoaded(true), []);
+
+  const handleError = useCallback(() => {
+    setLoaded(false);
+    setStage((current) => {
+      if (current !== stage) return current;
+      return stage === 'sheet' ? 'tmdb' : 'failed';
+    });
+  }, [stage]);
 
   // Imágenes ya en caché pueden estar completas antes de enganchar onLoad.
   const imgRef = useCallback(
     (node) => {
       if (!node?.complete) return;
-      if (node.naturalWidth > 0) markLoaded();
-      else markFailed();
+      if (node.naturalWidth > 0) setLoaded(true);
+      else handleError();
     },
-    [markLoaded, markFailed],
+    [handleError],
   );
 
-  if (!src || status === 'error') return <PosterPlaceholder title={title} compact={compact} />;
+  if (stage === 'failed') return <PosterPlaceholder title={title} compact={compact} />;
 
   return (
     <div className={`relative h-full w-full bg-ink-800 ${className}`}>
-      {status === 'loading' && (
+      {!loaded && (
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute inset-0 animate-shimmer bg-linear-to-r from-transparent via-white/[0.04] to-transparent" />
         </div>
       )}
-      <img
-        ref={imgRef}
-        src={src}
-        alt={`Carátula de ${title}`}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-        referrerPolicy="no-referrer"
-        draggable={false}
-        onLoad={markLoaded}
-        onError={markFailed}
-        className={`h-full w-full object-cover transition-opacity duration-500 ${
-          status === 'loaded' ? 'opacity-100' : 'opacity-0'
-        }`}
-      />
+      {finalSrc && (
+        <img
+          ref={imgRef}
+          src={finalSrc}
+          alt={`Carátula de ${title}`}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          referrerPolicy="no-referrer"
+          draggable={false}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={`h-full w-full object-cover transition-opacity duration-500 ${
+            loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
     </div>
   );
+}
+
+// La "key" reinicia el estado si cambia la película o su URL.
+function Poster(props) {
+  return <PosterInner key={`${props.src ?? ''}|${props.title}`} {...props} />;
 }
 
 export default memo(Poster);

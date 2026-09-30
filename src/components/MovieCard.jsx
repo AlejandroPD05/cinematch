@@ -12,8 +12,6 @@ const posterVariants = {
 };
 
 function MovieCard({ movie, index = 0, onOpen }) {
-  const subtitle = movie.details.year || movie.details.saga || '';
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -30,6 +28,7 @@ function MovieCard({ movie, index = 0, onOpen }) {
         onClick={() => onOpen(movie)}
         className="group block w-full rounded-xl text-left focus-visible:outline-none"
         aria-label={`Abrir ficha de ${movie.title}`}
+        title={movie.title}
       >
         <motion.div
           variants={posterVariants}
@@ -52,11 +51,6 @@ function MovieCard({ movie, index = 0, onOpen }) {
             </p>
           </div>
         </motion.div>
-
-        <span className="mt-2.5 line-clamp-2 text-[13px] leading-snug font-semibold text-fg/90 transition-colors group-hover:text-fg sm:text-sm">
-          {movie.title}
-        </span>
-        {subtitle && <span className="mt-0.5 block truncate text-xs text-muted">{subtitle}</span>}
       </motion.button>
     </motion.div>
   );
