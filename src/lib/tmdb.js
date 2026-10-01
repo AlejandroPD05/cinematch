@@ -1,100 +1,10 @@
+import IDS from './tmdbIds.json';
+import { OVERRIDES, UMBRAL, normalizar, puntuar } from './tmdbMatch.js';
+
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 const IMG_BASE = 'https://image.tmdb.org/t/p/w500';
-const CACHE_KEY = 'cinematch_posters_v9';
+const CACHE_KEY = 'cinematch_posters_v10';
 const MAX_PARALELAS = 6;
-const UMBRAL = 0.7; // parecido mínimo de título para aceptar un póster
-
-/**
- * Películas que TMDB no encuentra bien buscando solo por el nombre del Sheets.
- * Clave: el título como está en el Sheets, en minúsculas y sin acentos.
- * Valor: puede ser
- *   - un número: el ID de TMDB (themoviedb.org/movie/ID-nombre)
- *   - { q: 'título oficial', year: 2016 }: búsqueda por título y año de estreno
- */
-const OVERRIDES = {
-  'jurassic park 1': 329,
-  'jurassic park 2': 330,
-  'jurassic park 3': 331,
-  'jurassic world': 135397,
-  'jurassic world 2': 351286,
-  'jurassic world 3': 507086,
-  'ice age': 425,
-  'ice age 2': 950,
-  'ice age 3': 8355,
-  'ice age 4': 57800,
-  'rompe ralph rompe internet': 404368,
-
-  'ice age 5': { q: 'Ice Age: Collision Course', year: 2016 },
-  mowgli: { q: 'Mowgli: Legend of the Jungle', year: 2018 },
-  'del reves': { q: 'Inside Out', year: 2015 },
-  'del reves 2': { q: 'Inside Out 2', year: 2024 },
-  'detective pikachu': { q: 'Pokémon Detective Pikachu', year: 2019 },
-  'hotel transilvania 3': { q: 'Hotel Transylvania 3: Summer Vacation', year: 2018 },
-  'hotel transilvania 4': { q: 'Hotel Transylvania: Transformania', year: 2022 },
-  'la sirenita': { q: 'The Little Mermaid', year: 1989 },
-  'la sirenita 1': { q: 'The Little Mermaid', year: 1989 },
-  'la sirenita 3': { q: "The Little Mermaid: Ariel's Beginning", year: 2008 },
-
-  'las guerreras kpop': { q: 'KPop Demon Hunters', year: 2025 },
-  'mamma mia 2': { q: 'Mamma Mia! Here We Go Again', year: 2018 },
-  'tod y tobby': { q: 'The Fox and the Hound', year: 1981 },
-  'tod y tobby 2': { q: 'The Fox and the Hound 2', year: 2006 },
-  'el libro de la selva la': { q: 'The Jungle Book', year: 2016 },
-  'el libro de la selva live action': { q: 'The Jungle Book', year: 2016 },
-  'barbie princesa de las hadas': { q: 'Barbie: Mariposa & the Fairy Princess', year: 2013 },
-  'barbie popstars': { q: 'Barbie: The Princess & the Popstar', year: 2012 },
-};
-
-// "El Diario de Noa!" → "el diario de noa"
-const normalizar = (texto) =>
-  String(texto ?? '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-
-// Números de un título ("ice age 2" → "2"), para no confundir secuelas.
-const numeros = (texto) => (texto.match(/\d+/g) || []).join(' ');
-
-// Parecido entre dos textos de 0 a 1 (coeficiente de Dice sobre pares de letras).
-function parecido(a, b) {
-  if (a === b) return 1;
-  if (a.length < 2 || b.length < 2) return 0;
-  const pares = new Map();
-  for (let i = 0; i < a.length - 1; i += 1) {
-    const par = a.slice(i, i + 2);
-    pares.set(par, (pares.get(par) || 0) + 1);
-  }
-  let comunes = 0;
-  for (let i = 0; i < b.length - 1; i += 1) {
-    const par = b.slice(i, i + 2);
-    const restantes = pares.get(par) || 0;
-    if (restantes > 0) {
-      pares.set(par, restantes - 1);
-      comunes += 1;
-    }
-  }
-  return (2 * comunes) / (a.length + b.length - 2);
-}
-
-// Puntúa un resultado de TMDB frente al título buscado (usa título en español y original).
-function puntuar(buscado, resultado) {
-  const nombres = [resultado.title, resultado.original_title].map(normalizar).filter(Boolean);
-  let mejor = 0;
-  nombres.forEach((nombre) => {
-    let puntos;
-    if (nombre === buscado) {
-      puntos = 1;
-    } else {
-      puntos = nombre.startsWith(`${buscado} `) ? 0.9 : parecido(buscado, nombre);
-      // Si los números no coinciden (Ice age 2 vs Ice age 3), casi seguro es otra película.
-      if (numeros(buscado) !== numeros(nombre)) puntos -= 0.3;
-    }
-    if (puntos > mejor) mejor = puntos;
-  });
-  return mejor;
-}
 
 const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -202,7 +112,11 @@ async function posterPorBusqueda(titulo) {
   return elegido ? elegido.r.poster_path : '';
 }
 
-function buscarPath(titulo, override) {
+function buscarPath(titulo, k) {
+  const fijo = IDS[k];
+  if (fijo && fijo.id) return posterPorId(fijo.id);
+
+  const override = OVERRIDES[k];
   if (typeof override === 'number') return posterPorId(override);
   if (override && override.q) return posterPorTituloYAnio(override);
   return posterPorBusqueda(titulo);
@@ -210,20 +124,28 @@ function buscarPath(titulo, override) {
 
 // Devuelve la URL completa del póster, o null si no se encuentra
 export async function obtenerPoster(titulo) {
-  if (!titulo || !TOKEN) return null;
+  if (!titulo) return null;
 
   const k = normalizar(titulo);
+
+  // 1. Guardado en tmdbIds.json: no necesita ninguna petición ni token.
+  const fijo = IDS[k];
+  if (fijo && fijo.poster) return IMG_BASE + fijo.poster;
+
+  // 2. Resto: se busca en TMDB (necesita token)
+  if (!TOKEN) return null;
+
   const cache = leerCache();
   if (k in cache) return cache[k] ? IMG_BASE + cache[k] : null;
 
   return encolar(async () => {
     try {
-      const path = await buscarPath(titulo, OVERRIDES[k]);
+      const path = await buscarPath(titulo, k);
       const cacheActual = leerCache();
       cacheActual[k] = path;
       guardarCache(cacheActual);
       if (!path) {
-        console.warn(`[CINEMATCH] Sin póster en TMDB: "${k}" → añádelo a OVERRIDES`);
+        console.warn(`[CINEMATCH] Sin póster en TMDB: "${k}" → ejecuta el script o añádelo a OVERRIDES`);
       }
       return path ? IMG_BASE + path : null;
     } catch {

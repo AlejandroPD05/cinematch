@@ -1,0 +1,787 @@
+{
+  "jurassic park 1": {
+    "id": 329,
+    "titulo": "Jurassic Park (Parque Jurásico)",
+    "anio": "1993",
+    "poster": "/1r8TWaAExHbFRzyqT3Vcbq1XZQb.jpg"
+  },
+  "jurassic park 2": {
+    "id": 330,
+    "titulo": "El mundo perdido: Jurassic Park",
+    "anio": "1997",
+    "poster": "/80pXV9DEd81rBGqmlPBLbvr6h9a.jpg"
+  },
+  "jurassic park 3": {
+    "id": 331,
+    "titulo": "Jurassic Park III (Parque Jurásico III)",
+    "anio": "2001",
+    "poster": "/5GM4Nqc79PFE3IOqNKwmOxAWkX1.jpg"
+  },
+  "jurassic world": {
+    "id": 135397,
+    "titulo": "Jurassic World",
+    "anio": "2015",
+    "poster": "/sOgfattHPWE5sWdVCGHQ08GEbaP.jpg"
+  },
+  "jurassic world 2": {
+    "id": 351286,
+    "titulo": "Jurassic World: El reino caído",
+    "anio": "2018",
+    "poster": "/yHa2I7qxZvZUASLHrIR8vQLmZ4B.jpg"
+  },
+  "jurassic world 3": {
+    "id": 507086,
+    "titulo": "Jurassic World: Dominion",
+    "anio": "2022",
+    "poster": "/sXeWfpT1EhG7f4uBouqraOhmouH.jpg"
+  },
+  "jurassic world 4": {
+    "id": 1234821,
+    "titulo": "Jurassic World: El renacer",
+    "anio": "2025",
+    "poster": "/2sbGd7kDhMicDkT097FR9a2JyGU.jpg"
+  },
+  "the greatest showman": {
+    "id": 316029,
+    "titulo": "El gran showman",
+    "anio": "2017",
+    "poster": "/5HjkqEeLPubkMPM9TgV6kB3Iyn0.jpg"
+  },
+  "dos rubias de pelo en pecho": {
+    "id": 12153,
+    "titulo": "Dos rubias de pelo en pecho",
+    "anio": "2004",
+    "poster": "/sgg5mR2Iz6QV4eWkqGrTgxOERaH.jpg"
+  },
+  "el diario de noa": {
+    "id": 11036,
+    "titulo": "El diario de Noa",
+    "anio": "2004",
+    "poster": "/gFCnDKfsZWzyv9sweizVC4EWn06.jpg"
+  },
+  "mamma mia": {
+    "id": 11631,
+    "titulo": "Mamma Mia! La película",
+    "anio": "2008",
+    "poster": "/4QthG4HsSQ30Uit2CpOz6YRikX1.jpg"
+  },
+  "mulan": {
+    "id": 10674,
+    "titulo": "Mulán",
+    "anio": "1998",
+    "poster": "/towmTJ0k29quKI9IDnOZKAAtQx.jpg",
+    "revisar": true
+  },
+  "pocahontas": {
+    "id": 10530,
+    "titulo": "Pocahontas",
+    "anio": "1995",
+    "poster": "/o8QGvm0zDrJ8aONM8G5dW4BNawG.jpg",
+    "revisar": true
+  },
+  "enredados": {
+    "id": 38757,
+    "titulo": "Enredados",
+    "anio": "2010",
+    "poster": "/z5kvXWek4smCyeWBDJQkT5sLc9T.jpg",
+    "revisar": true
+  },
+  "megalodon": {
+    "id": 345940,
+    "titulo": "Megalodón",
+    "anio": "2018",
+    "poster": "/kBl4wXkKVZep4AVVxju67uh6uVV.jpg",
+    "revisar": true
+  },
+  "megalodon 2": {
+    "id": 615656,
+    "titulo": "Megalodón 2: La fosa",
+    "anio": "2023",
+    "poster": "/mBgynPDplmo5JTY9VfGqY35OjDu.jpg"
+  },
+  "primitive war": {
+    "id": 1257009,
+    "titulo": "Primitive War",
+    "anio": "2025",
+    "poster": "/bRVo9KLSJjfIHCjMTMjpnrblGre.jpg"
+  },
+  "a dos metros de ti": {
+    "id": 527641,
+    "titulo": "A dos metros de ti",
+    "anio": "2019",
+    "poster": "/4F5LggLzv2VIa0MJT2ETN8bWtr2.jpg"
+  },
+  "nerve": {
+    "id": 328387,
+    "titulo": "Nerve, un juego sin reglas",
+    "anio": "2016",
+    "poster": "/bdKOmmHz0PvXISiAeBIWDFHw2WV.jpg",
+    "revisar": true
+  },
+  "bad boys": {
+    "id": 9737,
+    "titulo": "Dos policías rebeldes",
+    "anio": "1995",
+    "poster": "/ZYpSdXaTMFYCGbmVmXOFbdJmSv.jpg",
+    "revisar": true
+  },
+  "ice age": {
+    "id": 425,
+    "titulo": "Ice Age: La edad de hielo",
+    "anio": "2002",
+    "poster": "/yzz9kZPeNtJLd3LxgbO6fBxNxez.jpg"
+  },
+  "ice age 2": {
+    "id": 950,
+    "titulo": "Ice Age 2: El deshielo",
+    "anio": "2006",
+    "poster": "/wnBEdWq5gplaAgTmYFg4cq89mWi.jpg"
+  },
+  "ice age 3": {
+    "id": 8355,
+    "titulo": "Ice Age 3: El origen de los dinosaurios",
+    "anio": "2009",
+    "poster": "/7BAJh4R1pdSxvZO7JeV4PmDXjcY.jpg"
+  },
+  "ice age 4": {
+    "id": 57800,
+    "titulo": "Ice Age 4: La formación de los continentes",
+    "anio": "2012",
+    "poster": "/qYiZOCXkOYtYfolUUdJKoZ8xPsL.jpg"
+  },
+  "alerta roja": {
+    "id": 512195,
+    "titulo": "Alerta roja",
+    "anio": "2021",
+    "poster": "/odBUpjZGxY3y7FBo5NBtEYGJf5r.jpg",
+    "revisar": true
+  },
+  "barbie rapunzel": {
+    "id": 15015,
+    "titulo": "Barbie: Princesa Rapunzel",
+    "anio": "2002",
+    "poster": "/7bqisMuYCUsZIm77T5RJ6qEpyeD.jpg"
+  },
+  "barbie princess pauper": {
+    "id": 15165,
+    "titulo": "Barbie en La princesa y la costurera",
+    "anio": "2004",
+    "poster": "/2X6kRYytvhEwuS2ukHwVvIN7eVc.jpg",
+    "revisar": true
+  },
+  "barbie fairytopia": {
+    "id": 13284,
+    "titulo": "Barbie Fairytopía",
+    "anio": "2005",
+    "poster": "/a0VPQHpLNCWWmiXwjD7aJVRaH78.jpg"
+  },
+  "barbie magic pegasus": {
+    "id": 15906,
+    "titulo": "Barbie y La magia de pegaso",
+    "anio": "2005",
+    "poster": "/zAa2gaEPWeChtXti5oziwkK58OI.jpg",
+    "revisar": true
+  },
+  "barbie fairytopia mermaidia": {
+    "id": 13285,
+    "titulo": "Barbie Fairytopía: Mermaidia",
+    "anio": "2006",
+    "poster": "/uBCvRThFwjvwNQeS3Vy7xMPc0Rh.jpg"
+  },
+  "barbie diario": {
+    "id": 21705,
+    "titulo": "Los diarios de Barbie",
+    "anio": "2006",
+    "poster": "/jXYJ7YmK4LHxCsDF2yL2B8uxuUJ.jpg",
+    "revisar": true
+  },
+  "barbie magic of the rainbow": {
+    "id": 16962,
+    "titulo": "Barbie Fairytopía: La magia del arco iris",
+    "anio": "2007",
+    "poster": "/f1MEVtc6wsk356iaqTG89dsvop9.jpg",
+    "revisar": true
+  },
+  "barbie princesa de animales": {
+    "id": 13283,
+    "titulo": "Barbie en La princesa de los animales",
+    "anio": "2007",
+    "poster": "/a1BZL90vO0fQ31Sf9RMXQHh2RWk.jpg",
+    "revisar": true
+  },
+  "barbie castillo de diamantes": {
+    "id": 13004,
+    "titulo": "Barbie y El castillo de diamantes",
+    "anio": "2008",
+    "poster": "/o3nwrE8OjpOufeu42JbHcW8l4zO.jpg"
+  },
+  "barbie cuento de navidad": {
+    "id": 13459,
+    "titulo": "Barbie en Un cuento de Navidad",
+    "anio": "2008",
+    "poster": "/9HuzdX0vCYLUXSqH3rumTRsBHZC.jpg",
+    "revisar": true
+  },
+  "barbie pulgarcita": {
+    "id": 16418,
+    "titulo": "Barbie presenta: Pulgarcita",
+    "anio": "2009",
+    "poster": "/e84WWGGJVAdRAACEazoTXiajqk.jpg",
+    "revisar": true
+  },
+  "barbie mosqueteras": {
+    "id": 23566,
+    "titulo": "Barbie y Las tres mosqueteras",
+    "anio": "2009",
+    "poster": "/xhXP2Yf6zKdnmbY4bLFeRUd7csY.jpg",
+    "revisar": true
+  },
+  "barbie sirena": {
+    "id": 1012801,
+    "titulo": "Barbie: Poder sirenio",
+    "anio": "2022",
+    "poster": "/isWRWePWGGy5flQPYoj01kPvKFF.jpg",
+    "revisar": true
+  },
+  "barbie moda en paris": {
+    "id": 44874,
+    "titulo": "Barbie: Moda mágica en París",
+    "anio": "2010",
+    "poster": "/Am0sUl4S5PxKHQxIB3ktKWJwYAq.jpg",
+    "revisar": true
+  },
+  "barbie fairy secret": {
+    "id": 57737,
+    "titulo": "Barbie: El secreto de las hadas",
+    "anio": "2011",
+    "poster": "/gWLvz00qL5GXFsPqB3rl7ysYB5j.jpg"
+  },
+  "barbie mariposa": {
+    "id": 18198,
+    "titulo": "Barbie: Mariposa y sus amigas las hadas",
+    "anio": "2008",
+    "poster": "/qMH3FpLDKbzFngxN1aVth3srgdO.jpg"
+  },
+  "barbie escuela de princesas": {
+    "id": 73456,
+    "titulo": "Barbie: Escuela de princesas",
+    "anio": "2011",
+    "poster": "/qChFxsIJvwALomvWiVb3qUq0PIX.jpg"
+  },
+  "barbie princesa de las hadas": {
+    "id": 196254,
+    "titulo": "Barbie: Mariposa y la princesa de las hadas",
+    "anio": "2013",
+    "poster": "/aUVd4itaF4mDFgld99wMIihjUK7.jpg"
+  },
+  "barbie popstars": {
+    "id": 129533,
+    "titulo": "Barbie: La princesa y la cantante",
+    "anio": "2012",
+    "poster": "/hHM7FH7LnyqeD6YhEYolEEAFbKV.jpg"
+  },
+  "6 underground": {
+    "id": 509967,
+    "titulo": "6 en la sombra",
+    "anio": "2019",
+    "poster": "/ug4XukdNLwD9Ygyw4V0L5DjoNAp.jpg"
+  },
+  "intercambiados": {
+    "id": 1007757,
+    "titulo": "Intercambiados",
+    "anio": "2026",
+    "poster": "/i89vUDwNhAEWUZSFYITSiv1RIbK.jpg",
+    "revisar": true
+  },
+  "zootropolis 2": {
+    "id": 1084242,
+    "titulo": "Zootrópolis 2",
+    "anio": "2025",
+    "poster": "/4fRdfQPjHiuDSkzaxFAV44k7Iem.jpg"
+  },
+  "ice age 5": {
+    "id": 278154,
+    "titulo": "Ice Age: El gran cataclismo",
+    "anio": "2016",
+    "poster": "/vgxlqI40AUXmpBzcwlLsYZI5EcR.jpg"
+  },
+  "encanto": {
+    "id": 568124,
+    "titulo": "Encanto",
+    "anio": "2021",
+    "poster": "/d0ezQ1Jz0lpNsX1skEmIvqRL7mN.jpg",
+    "revisar": true
+  },
+  "raya el ultimo dragon": {
+    "id": 527774,
+    "titulo": "Raya y el último dragón",
+    "anio": "2021",
+    "poster": "/hbjOtofNpvFvhzBUUoZGAjkjjsl.jpg"
+  },
+  "romper el circulo": {
+    "id": 1079091,
+    "titulo": "Romper el círculo",
+    "anio": "2024",
+    "poster": "/hvpQDMkfAbkiz8kxJOybcNSAq1j.jpg"
+  },
+  "hoppers": {
+    "id": 1327819,
+    "titulo": "Hoppers",
+    "anio": "2026",
+    "poster": "/hJRMZZv1WUKWMYQ73VB8hdFq8tq.jpg"
+  },
+  "hermano oso": {
+    "id": 10009,
+    "titulo": "Hermano oso",
+    "anio": "2003",
+    "poster": "/1XwOQNSby3HZfKMZcY7rtZw4KR.jpg"
+  },
+  "hermano oso 2": {
+    "id": 10010,
+    "titulo": "Hermano oso 2",
+    "anio": "2006",
+    "poster": "/tHvNX0SSyCW9MyPeWK5myc9lTLS.jpg"
+  },
+  "el libro de la selva la": {
+    "id": 278927,
+    "titulo": "El libro de la selva",
+    "anio": "2016",
+    "poster": "/pQGB08Kxyt3TLN4L01E175BRcvu.jpg"
+  },
+  "mowgli": {
+    "id": 407436,
+    "titulo": "Mowgli. La leyenda de la selva",
+    "anio": "2018",
+    "poster": "/c8qsep5WOHfHUxEK3D2a9RUDRAw.jpg"
+  },
+  "tod y tobby": {
+    "id": 10948,
+    "titulo": "Tod y Toby",
+    "anio": "1981",
+    "poster": "/33jyy4W2usMrY796udOjcbMwput.jpg"
+  },
+  "tod y tobby 2": {
+    "id": 9948,
+    "titulo": "Tod y Toby 2",
+    "anio": "2006",
+    "poster": "/pqPdNJG8XC7cklobrB5pk8ML1Ij.jpg"
+  },
+  "el viaje de arlo": {
+    "id": 105864,
+    "titulo": "El viaje de Arlo",
+    "anio": "2015",
+    "poster": "/1WKI6PM79XjK2LVS1B4yoG3wNHw.jpg"
+  },
+  "del reves": {
+    "id": 150540,
+    "titulo": "Del revés (Inside Out)",
+    "anio": "2015",
+    "poster": "/sG3bHZWCMOZwhUq71WbPG9Vrrwc.jpg"
+  },
+  "del reves 2": {
+    "id": 1022789,
+    "titulo": "Del revés 2 (Inside Out 2)",
+    "anio": "2024",
+    "poster": "/lE3DCRI7bQgHSiIuEPcFiXpiuGV.jpg"
+  },
+  "encantada la historia de giselle": {
+    "id": 4523,
+    "titulo": "Encantada: La historia de Giselle",
+    "anio": "2007",
+    "poster": "/e6CnQbQNX1vsQKqXzBwMpj9RS2I.jpg"
+  },
+  "elemental": {
+    "id": 976573,
+    "titulo": "Elemental",
+    "anio": "2023",
+    "poster": "/d79DeKDCgFOM23O8Dr6MELZVooY.jpg",
+    "revisar": true
+  },
+  "mamma mia 2": {
+    "id": 458423,
+    "titulo": "Mamma Mia! Una y otra vez",
+    "anio": "2018",
+    "poster": "/ian2GqgxsKjhup9P9a6lqIYOmlQ.jpg"
+  },
+  "turning red": {
+    "id": 508947,
+    "titulo": "Red",
+    "anio": "2022",
+    "poster": "/djM4COTksd5YRIdd9uEl8eA3iaa.jpg"
+  },
+  "las guerreras kpop": {
+    "id": 803796,
+    "titulo": "Las guerreras k-pop",
+    "anio": "2025",
+    "poster": "/6EQMqEmdG5HoGe2zT1WwWUMvVhv.jpg"
+  },
+  "luca": {
+    "id": 508943,
+    "titulo": "Luca",
+    "anio": "2021",
+    "poster": "/pr06RihHOGE3waZQx5fs2WYUdwr.jpg",
+    "revisar": true
+  },
+  "onward": {
+    "id": 508439,
+    "titulo": "Onward",
+    "anio": "2020",
+    "poster": "/tHWeWBBOlkPYdlZcjSKeToQvgZg.jpg",
+    "revisar": true
+  },
+  "grase": {
+    "id": 654688,
+    "titulo": "Gräser",
+    "anio": "2000",
+    "poster": "/tRbv2uiEQ7FyoTOsW9ddiqIscEV.jpg",
+    "revisar": true
+  },
+  "tarzan": {
+    "id": 37135,
+    "titulo": "Tarzán",
+    "anio": "1999",
+    "poster": "/1Gk8iihu4Q4BGh2n1IwNLB3zM8E.jpg",
+    "revisar": true
+  },
+  "el paquete": {
+    "id": 503619,
+    "titulo": "El paquete",
+    "anio": "2018",
+    "poster": "/9JZcc0EgHbvAwt9iFJIot4wNapY.jpg",
+    "revisar": true
+  },
+  "tarzan 2": {
+    "id": 15657,
+    "titulo": "Tarzán 2",
+    "anio": "2005",
+    "poster": "/5KRnGepv2b1daJ2WM8ZGnPS64nl.jpg"
+  },
+  "tarzan y jane": {
+    "id": 13683,
+    "titulo": "Tarzán y Jane",
+    "anio": "2002",
+    "poster": "/6AEkHBqavdBdnuFvE0cSkm6Srns.jpg"
+  },
+  "zombie camp": {
+    "id": 273477,
+    "titulo": "Zombie camp",
+    "anio": "2015",
+    "poster": "/zHg5kekzCZkAUun0dNsII97PghE.jpg"
+  },
+  "rio": {
+    "id": 46195,
+    "titulo": "Río",
+    "anio": "2011",
+    "poster": "/ydExhIrbFvPedN9tSIHzzniU1Dd.jpg",
+    "revisar": true
+  },
+  "rio 2": {
+    "id": 172385,
+    "titulo": "Río 2",
+    "anio": "2014",
+    "poster": "/n52k2FD0ub5I3goqnj5qr98ROk4.jpg"
+  },
+  "los descendientes": {
+    "id": 65057,
+    "titulo": "Los descendientes",
+    "anio": "2011",
+    "poster": "/5pEIZT8uhW0jInLywrStNmj8N0w.jpg",
+    "revisar": true
+  },
+  "los descendientes 2": {
+    "id": 417320,
+    "titulo": "Los descendientes 2",
+    "anio": "2017",
+    "poster": "/uQCZ12XelnvTchY9ncdLgnm4Gqy.jpg"
+  },
+  "los descendientes 3": {
+    "id": 506574,
+    "titulo": "Los descendientes 3",
+    "anio": "2019",
+    "poster": "/iQICsH7ckxRExHu0fvPrsczpKJu.jpg"
+  },
+  "los descendientes corazon rebelde": {
+    "id": 974262,
+    "titulo": "Los descendientes: Corazón rebelde",
+    "anio": "2024",
+    "poster": "/57XarHzHxeDouUyjAb6BpVxIkC0.jpg"
+  },
+  "camp rock": {
+    "id": 13655,
+    "titulo": "Camp Rock",
+    "anio": "2008",
+    "poster": "/7IXMqZnwccogptThay3togKIFWw.jpg"
+  },
+  "camp rock 2": {
+    "id": 44244,
+    "titulo": "Camp Rock 2: The Final Jam",
+    "anio": "2010",
+    "poster": "/tiU02J6psYrY15tOASiJq6S18bU.jpg"
+  },
+  "dunkerque": {
+    "id": 374720,
+    "titulo": "Dunkerque",
+    "anio": "2017",
+    "poster": "/to21T9dJtVoHDQbhHTpcugx7cgf.jpg"
+  },
+  "z o m b i e s": {
+    "id": 483980,
+    "titulo": "Z-O-M-B-I-E-S",
+    "anio": "2018",
+    "poster": "/6S9O5U7Ietqh6zTtZhGbhbA3Pze.jpg"
+  },
+  "z o m b i e s 2": {
+    "id": 599521,
+    "titulo": "Z-O-M-B-I-E-S 2",
+    "anio": "2020",
+    "poster": "/cOnxoQ3kx4mgmWb7yRi6GBWssOh.jpg"
+  },
+  "z o m b i e s 3": {
+    "id": 809107,
+    "titulo": "Z-O-M-B-I-E-S 3",
+    "anio": "2022",
+    "poster": "/966ceZHDYvXQOvGYu1pvxiB0A54.jpg"
+  },
+  "z o m b i e s 4": {
+    "id": 1243341,
+    "titulo": "Z-O-M-B-I-E-S 4: Un verano entre vampiros",
+    "anio": "2025",
+    "poster": "/ozfvKsZcOWj50b7hdC58ifHEebv.jpg"
+  },
+  "big hero 6": {
+    "id": 177572,
+    "titulo": "Big Hero 6",
+    "anio": "2014",
+    "poster": "/qVU0ag4i5BCmH5h4o04cdvUo0Zf.jpg"
+  },
+  "los descendientes viaje al mundo oscuro": {
+    "id": 1318621,
+    "titulo": "Los Descendientes: viaje al mundo oscuro",
+    "anio": "2026",
+    "poster": "/pBY8LeKTcgqeWKztgclJvRs8z1T.jpg"
+  },
+  "emoji la pelicula": {
+    "id": 378236,
+    "titulo": "Emoji: La película",
+    "anio": "2017",
+    "poster": "/3Gsc5NFpeT22l43sEHd7rVZSbXK.jpg"
+  },
+  "rompe ralph": {
+    "id": 82690,
+    "titulo": "¡Rompe Ralph!",
+    "anio": "2012",
+    "poster": "/lTpE4JQ2C09NicqvDhwi70IRz62.jpg"
+  },
+  "rompe ralph rompe internet": {
+    "id": 404368,
+    "titulo": "Ralph rompe Internet",
+    "anio": "2018",
+    "poster": "/wfff5XoLdGQzCt2Nb4ZF6WYNLAq.jpg"
+  },
+  "camp rock 3": {
+    "id": 1493400,
+    "titulo": "Camp Rock 3",
+    "anio": "2026",
+    "poster": "/lUGn8nzz0wU0zoApaex8WmwaCpT.jpg"
+  },
+  "coco": {
+    "id": 354912,
+    "titulo": "Coco",
+    "anio": "2017",
+    "poster": "/vwsFGblLYxWBNjg9pdWN1Mm5YfW.jpg",
+    "revisar": true
+  },
+  "tyler rake": {
+    "id": 545609,
+    "titulo": "Tyler Rake",
+    "anio": "2020",
+    "poster": "/cNu6VozUfD9jjQUjGuGBRoMlpYA.jpg"
+  },
+  "tyler rake 2": {
+    "id": 697843,
+    "titulo": "Tyler Rake 2",
+    "anio": "2023",
+    "poster": "/jT0Eyfw0VXlnk8sMKfyFiKj8UsK.jpg"
+  },
+  "teen beach movie": {
+    "id": 177888,
+    "titulo": "Teen Beach Movie",
+    "anio": "2013",
+    "poster": "/sKrGe5EmDSyVaWM0uj7rJDQHRjB.jpg"
+  },
+  "teen beach movie 2": {
+    "id": 325189,
+    "titulo": "Teen Beach 2",
+    "anio": "2015",
+    "poster": "/3h1QyNjuuD6fwuMoFR8IG206Dan.jpg",
+    "revisar": true
+  },
+  "vaiana": {
+    "id": 277834,
+    "titulo": "Vaiana",
+    "anio": "2016",
+    "poster": "/y6wkgEH1gTWAafH9Bc7cNNut0Kf.jpg",
+    "revisar": true
+  },
+  "vaiana 2": {
+    "id": 1241982,
+    "titulo": "Vaiana 2",
+    "anio": "2024",
+    "poster": "/bit1B5F7IQydiWqdwAAD8f9TkXs.jpg"
+  },
+  "wish el poder de los deseos": {
+    "id": 1022796,
+    "titulo": "Wish: El poder de los deseos",
+    "anio": "2023",
+    "poster": "/1VXMrUioKfPAPSsezHKexx77Dbz.jpg"
+  },
+  "los tipos malos": {
+    "id": 629542,
+    "titulo": "Los tipos malos",
+    "anio": "2022",
+    "poster": "/czxHSOXyKd6zEvIOvUTxAwqOjcK.jpg"
+  },
+  "los tipos malos 2": {
+    "id": 1175942,
+    "titulo": "Los tipos malos 2",
+    "anio": "2025",
+    "poster": "/mZmnKDhIS2yNmtfzde5vtdCYzBF.jpg"
+  },
+  "detective pikachu": {
+    "id": 447404,
+    "titulo": "Pokémon Detective Pikachu",
+    "anio": "2019",
+    "poster": "/ttTX80AzrOlLIpwPiW1DsYHqWWA.jpg"
+  },
+  "embestida": {
+    "id": 1290417,
+    "titulo": "Embestida",
+    "anio": "2026",
+    "poster": "/osYy4GDE4nr69MGTJxRaZlqU82S.jpg"
+  },
+  "el final de oak street": {
+    "id": 1101383,
+    "titulo": "El final de Oak Street",
+    "anio": "2026",
+    "poster": "/g9DUGw8ufetrwhCIrwq3h1NlpWO.jpg"
+  },
+  "pokemon la pelicula": {
+    "id": 10228,
+    "titulo": "Pokémon: La película",
+    "anio": "1998",
+    "poster": "/aeskMWlroIsPR9AllXLW2H6Gev0.jpg"
+  },
+  "pokemon 2": {
+    "id": 12599,
+    "titulo": "Pokémon 2: El poder de uno",
+    "anio": "1999",
+    "poster": "/onOIJL2FPGF6hQ66zDEyesfTxSi.jpg"
+  },
+  "la odisea": {
+    "id": 1368337,
+    "titulo": "La Odisea",
+    "anio": "2026",
+    "poster": "/9aeb5U0saB7Tuu0QITaoENZBxFF.jpg",
+    "revisar": true
+  },
+  "brave": {
+    "id": 62177,
+    "titulo": "Brave (Indomable)",
+    "anio": "2012",
+    "poster": "/eVt6IKkzKqNs80TX0JVan6sjH5Z.jpg",
+    "revisar": true
+  },
+  "la viuda negra": {
+    "id": 1397832,
+    "titulo": "La viuda negra",
+    "anio": "2025",
+    "poster": "/tgmNdAQvLxLcSni35oP0nd8W3bq.jpg",
+    "revisar": true
+  },
+  "el gato con botas": {
+    "id": 417859,
+    "titulo": "El gato con botas",
+    "anio": "2011",
+    "poster": "/1VmrC82zY4U33l9UHlZTWDB1asN.jpg",
+    "revisar": true
+  },
+  "un monstruo en paris": {
+    "id": 77459,
+    "titulo": "Un monstruo en París",
+    "anio": "2011",
+    "poster": "/eVEJypxPzc1Tox9BGVhgmrCaCbh.jpg"
+  },
+  "kung fu panda": {
+    "id": 9502,
+    "titulo": "Kung Fu Panda",
+    "anio": "2008",
+    "poster": "/zcORJ8s9zsBjvKxP0k4FASQSjpf.jpg"
+  },
+  "kung fu panda 2": {
+    "id": 49444,
+    "titulo": "Kung Fu Panda 2",
+    "anio": "2011",
+    "poster": "/aNji9U9SPTecmoqGippQUBEyouy.jpg"
+  },
+  "kung fu panda 3": {
+    "id": 140300,
+    "titulo": "Kung Fu Panda 3",
+    "anio": "2016",
+    "poster": "/t11f8palNbICK9Ip5QLrUfhLJYq.jpg"
+  },
+  "kung fu panda 4": {
+    "id": 1011985,
+    "titulo": "Kung Fu Panda 4",
+    "anio": "2024",
+    "poster": "/2xgGWjM3a38E4KTLapvC53RnpN1.jpg"
+  },
+  "hotel transilvania": {
+    "id": 76492,
+    "titulo": "Hotel Transilvania",
+    "anio": "2012",
+    "poster": "/zvWlwBGQWuJ0wog65q1uS37BApC.jpg"
+  },
+  "hotel transilvania 2": {
+    "id": 159824,
+    "titulo": "Hotel Transilvania 2",
+    "anio": "2015",
+    "poster": "/ndYVcm1k3h81MRDhzZCI4SxDzGp.jpg"
+  },
+  "hotel transilvania 3": {
+    "id": 400155,
+    "titulo": "Hotel Transilvania 3: Unas vacaciones monstruosas",
+    "anio": "2018",
+    "poster": "/p5eBnMRoFWjSua4DYdiKjmHP3H5.jpg"
+  },
+  "hotel transilvania 4": {
+    "id": 585083,
+    "titulo": "Hotel Transilvania: Transformanía",
+    "anio": "2022",
+    "poster": "/xNF8AxJc966FWk4SYqXxGHaZLHZ.jpg"
+  },
+  "la sirenita": {
+    "id": 10144,
+    "titulo": "La sirenita",
+    "anio": "1989",
+    "poster": "/Vc0KvO7z2OzEbRs6nyZs9xD81s.jpg"
+  },
+  "la sirenita 2": {
+    "id": 10898,
+    "titulo": "La sirenita 2: Regreso al mar",
+    "anio": "2000",
+    "poster": "/1m6JsSmBa4X1Kp35YW3QPbMpByF.jpg"
+  },
+  "la sirenita 3": {
+    "id": 13676,
+    "titulo": "El origen de la sirenita",
+    "anio": "2008",
+    "poster": "/oP09KA2lP5SluKVf8AmRsf38X7q.jpg"
+  },
+  "road to eldorado": {
+    "id": 10501,
+    "titulo": "La ruta hacia El Dorado",
+    "anio": "2000",
+    "poster": "/yI7KqevlFBOJDpXFTZa0swDQZLU.jpg",
+    "revisar": true
+  }
+}
