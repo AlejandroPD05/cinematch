@@ -1,13 +1,23 @@
 export const UMBRAL = 0.7; // parecido mínimo de título para aceptar un póster
 
+// "El Diario de Noa!" → "el diario de noa"
+export const normalizar = (texto) =>
+  String(texto ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
 /**
  * Películas que TMDB no encuentra bien buscando solo por el nombre del Sheets.
- * Clave: el título como está en el Sheets, en minúsculas y sin acentos.
+ * Clave: el título tal como está en el Sheets (se normaliza solo: da igual
+ * mayúsculas, tildes o signos).
  * Valor: puede ser
  *   - un número: el ID de TMDB (themoviedb.org/movie/ID-nombre)
  *   - { q: 'título oficial', year: 2016 }: búsqueda por título y año de estreno
  */
-export const OVERRIDES = {
+const OVERRIDES_SIN_NORMALIZAR = {
   'jurassic park 1': 329,
   'jurassic park 2': 330,
   'jurassic park 3': 331,
@@ -20,27 +30,29 @@ export const OVERRIDES = {
   'ice age 3': 8355,
   'ice age 4': 57800,
   'rompe ralph rompe internet': 404368,
-  'PROJECTX': 57214,
-  'HTTYD': 10191,
-  'HTTYD 2': 82702,
-  'HTTYD 3': 166428,
-  'HSM': 10947,
-  'HSM2': 13649,
-  'HSM3': 11887,
-  'Bad boys 2': 8961,
-  'Bad boys 3': 38700,
-  'Bad boys 4': 573435,
-  'WALLE': 10681,
-  'Barbie y el cascanueces': 15167,
-  'Barbie y el lago de los cisnes': 15016,
-  'Barbie 12 bailarinas': 13002,
-  'Barbie sirenas 2': 91342,
-  'Zootroplis': 269149,
-  'Dencantada. vuelve giselle': 338958,
-  'Oso cocainomano': 804150,
-  'El gato con botas 2': 315162,
+  projectx: 57214,
+  httyd: 10191,
+  'httyd 2': 82702,
+  'httyd 3': 166428,
+  hsm: 10947,
+  hsm2: 13649,
+  hsm3: 11887,
+  'bad boys 2': 8961,
+  'bad boys 3': 38700,
+  'bad boys 4': 573435,
+  walle: 10681,
+  'barbie y el cascanueces': 15167,
+  'barbie y el lago de los cisnes': 15016,
+  'barbie 12 bailarinas': 13002,
+  'barbie sirenas 2': 91342,
+  zootroplis: 269149,
+  'dencantada vuelve giselle': 338958,
+  'oso cocainomano': 804150,
+  'el gato con botas 2': 315162,
+  'los descendientes': 277217,
+
   'ice age 5': { q: 'Ice Age: Collision Course', year: 2016 },
-  'mowgli': { q: 'Mowgli: Legend of the Jungle', year: 2018 },
+  mowgli: { q: 'Mowgli: Legend of the Jungle', year: 2018 },
   'del reves': { q: 'Inside Out', year: 2015 },
   'del reves 2': { q: 'Inside Out 2', year: 2024 },
   'detective pikachu': { q: 'Pokémon Detective Pikachu', year: 2019 },
@@ -57,16 +69,14 @@ export const OVERRIDES = {
   'el libro de la selva live action': { q: 'The Jungle Book', year: 2016 },
   'barbie princesa de las hadas': { q: 'Barbie: Mariposa & the Fairy Princess', year: 2013 },
   'barbie popstars': { q: 'Barbie: The Princess & the Popstar', year: 2012 },
+  'barbie sirena': { q: 'Barbie in A Mermaid Tale', year: 2010 },
+  grase: { q: 'Grease', year: 1978 },
 };
 
-// "El Diario de Noa!" → "el diario de noa"
-export const normalizar = (texto) =>
-  String(texto ?? '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
+// Normaliza todas las claves para que coincidan siempre con el título del Sheets.
+export const OVERRIDES = Object.fromEntries(
+  Object.entries(OVERRIDES_SIN_NORMALIZAR).map(([clave, valor]) => [normalizar(clave), valor]),
+);
 
 // Números de un título ("ice age 2" → "2"), para no confundir secuelas.
 const numeros = (texto) => (texto.match(/\d+/g) || []).join(' ');

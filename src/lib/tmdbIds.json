@@ -53,6 +53,12 @@
     "anio": "2004",
     "poster": "/sgg5mR2Iz6QV4eWkqGrTgxOERaH.jpg"
   },
+  "projectx": {
+    "id": 57214,
+    "titulo": "Proyecto X",
+    "anio": "2012",
+    "poster": "/owF9NIcQOPFAOjp2pni8BsVlnRq.jpg"
+  },
   "el diario de noa": {
     "id": 11036,
     "titulo": "El diario de Noa",
@@ -86,6 +92,12 @@
     "poster": "/z5kvXWek4smCyeWBDJQkT5sLc9T.jpg",
     "revisar": true
   },
+  "httyd": {
+    "id": 10191,
+    "titulo": "Cómo entrenar a tu dragón",
+    "anio": "2010",
+    "poster": "/vUF9bN3pT99IgdRMSInG0YSqPCN.jpg"
+  },
   "megalodon": {
     "id": 345940,
     "titulo": "Megalodón",
@@ -104,6 +116,24 @@
     "titulo": "Primitive War",
     "anio": "2025",
     "poster": "/bRVo9KLSJjfIHCjMTMjpnrblGre.jpg"
+  },
+  "hsm": {
+    "id": 10947,
+    "titulo": "High School Musical",
+    "anio": "2006",
+    "poster": "/1DGmWZjUJPeKGFRHGCA6VPFUBML.jpg"
+  },
+  "hsm2": {
+    "id": 13649,
+    "titulo": "High School Musical 2",
+    "anio": "2007",
+    "poster": "/pZF6C4zXVzvtBdp5F43pM47ZHWa.jpg"
+  },
+  "hsm3": {
+    "id": 11887,
+    "titulo": "High School Musical 3: Fin de curso",
+    "anio": "2008",
+    "poster": "/DMpgcsydoSvmd8gp8LPKvEXSn5.jpg"
   },
   "a dos metros de ti": {
     "id": 527641,
@@ -124,6 +154,24 @@
     "anio": "1995",
     "poster": "/ZYpSdXaTMFYCGbmVmXOFbdJmSv.jpg",
     "revisar": true
+  },
+  "bad boys 2": {
+    "id": 8961,
+    "titulo": "Dos policías rebeldes II",
+    "anio": "2003",
+    "poster": "/qyHDZB87UQF9cu6uuQzhhaKGvuo.jpg"
+  },
+  "bad boys 3": {
+    "id": 38700,
+    "titulo": "Bad Boys for Life",
+    "anio": "2020",
+    "poster": "/zXYARspjKpwN9vAOp2F9MF3NWa1.jpg"
+  },
+  "bad boys 4": {
+    "id": 573435,
+    "titulo": "Bad Boys: Ride or Die",
+    "anio": "2024",
+    "poster": "/53y0ETa1TGdVrMEVx7oLW86ay8r.jpg"
   },
   "ice age": {
     "id": 425,
@@ -149,6 +197,12 @@
     "anio": "2012",
     "poster": "/qYiZOCXkOYtYfolUUdJKoZ8xPsL.jpg"
   },
+  "walle": {
+    "id": 10681,
+    "titulo": "WALL·E: Batallón de limpieza",
+    "anio": "2008",
+    "poster": "/5CXpoYB2YAZRPBcv9pjkgR6tZ0X.jpg"
+  },
   "alerta roja": {
     "id": 512195,
     "titulo": "Alerta roja",
@@ -156,11 +210,23 @@
     "poster": "/odBUpjZGxY3y7FBo5NBtEYGJf5r.jpg",
     "revisar": true
   },
+  "barbie y el cascanueces": {
+    "id": 15167,
+    "titulo": "Barbie en El cascanueces",
+    "anio": "2001",
+    "poster": "/3M5fjV6Pze7zC6suGQAG2MWI2fk.jpg"
+  },
   "barbie rapunzel": {
     "id": 15015,
     "titulo": "Barbie: Princesa Rapunzel",
     "anio": "2002",
     "poster": "/7bqisMuYCUsZIm77T5RJ6qEpyeD.jpg"
+  },
+  "barbie y el lago de los cisnes": {
+    "id": 15016,
+    "titulo": "Barbie en El lago de los cisnes",
+    "anio": "2003",
+    "poster": "/i8ApbmbduqprjY7io5udFjTgL6F.jpg"
   },
   "barbie princess pauper": {
     "id": 15165,
@@ -187,6 +253,12 @@
     "titulo": "Barbie Fairytopía: Mermaidia",
     "anio": "2006",
     "poster": "/uBCvRThFwjvwNQeS3Vy7xMPc0Rh.jpg"
+  },
+  "barbie 12 bailarinas": {
+    "id": 13002,
+    "titulo": "Barbie en Las 12 princesas bailarinas",
+    "anio": "2006",
+    "poster": "/areWNqaBEcY9Sx2iO9XCV2RvUaD.jpg"
   },
   "barbie diario": {
     "id": 21705,
@@ -237,11 +309,10 @@
     "revisar": true
   },
   "barbie sirena": {
-    "id": 1012801,
-    "titulo": "Barbie: Poder sirenio",
-    "anio": "2022",
-    "poster": "/isWRWePWGGy5flQPYoj01kPvKFF.jpg",
-    "revisar": true
+    "id": 34134,
+    "titulo": "Barbie en Una aventura de sirenas",
+    "anio": "2010",
+    "poster": "/7SL9oL7qXUSSnytBzWz839AMWxi.jpg"
   },
   "barbie moda en paris": {
     "id": 44874,
@@ -249,6 +320,12 @@
     "anio": "2010",
     "poster": "/Am0sUl4S5PxKHQxIB3ktKWJwYAq.jpg",
     "revisar": true
+  },
+  "barbie sirenas 2": {
+    "id": 91342,
+    "titulo": "Barbie en Una aventura de sirenas 2",
+    "anio": "2012",
+    "poster": "/tfDohxpz9AndhXduD2GpHj95teu.jpg"
   },
   "barbie fairy secret": {
     "id": 57737,
@@ -292,6 +369,12 @@
     "anio": "2026",
     "poster": "/i89vUDwNhAEWUZSFYITSiv1RIbK.jpg",
     "revisar": true
+  },
+  "zootroplis": {
+    "id": 269149,
+    "titulo": "Zootrópolis",
+    "anio": "2016",
+    "poster": "/4zIlT48TgNLuJpUtFOkFITHoCQE.jpg"
   },
   "zootropolis 2": {
     "id": 1084242,
@@ -390,6 +473,12 @@
     "anio": "2007",
     "poster": "/e6CnQbQNX1vsQKqXzBwMpj9RS2I.jpg"
   },
+  "dencantada vuelve giselle": {
+    "id": 338958,
+    "titulo": "Desencantada: Vuelve Giselle",
+    "anio": "2022",
+    "poster": "/kk3h3T1h9CyrlpKV2SzbLF4wj82.jpg"
+  },
   "elemental": {
     "id": 976573,
     "titulo": "Elemental",
@@ -430,11 +519,10 @@
     "revisar": true
   },
   "grase": {
-    "id": 654688,
-    "titulo": "Gräser",
-    "anio": "2000",
-    "poster": "/tRbv2uiEQ7FyoTOsW9ddiqIscEV.jpg",
-    "revisar": true
+    "id": 621,
+    "titulo": "Grease",
+    "anio": "1978",
+    "poster": "/flSy0dexE82TiS6Si2FtulSHk8o.jpg"
   },
   "tarzan": {
     "id": 37135,
@@ -442,6 +530,12 @@
     "anio": "1999",
     "poster": "/1Gk8iihu4Q4BGh2n1IwNLB3zM8E.jpg",
     "revisar": true
+  },
+  "oso cocainomano": {
+    "id": 804150,
+    "titulo": "Oso vicioso",
+    "anio": "2023",
+    "poster": "/yGCpehozPDlaczL4Fas1d01mfAH.jpg"
   },
   "el paquete": {
     "id": 503619,
@@ -482,11 +576,10 @@
     "poster": "/n52k2FD0ub5I3goqnj5qr98ROk4.jpg"
   },
   "los descendientes": {
-    "id": 65057,
+    "id": 277217,
     "titulo": "Los descendientes",
-    "anio": "2011",
-    "poster": "/5pEIZT8uhW0jInLywrStNmj8N0w.jpg",
-    "revisar": true
+    "anio": "2015",
+    "poster": "/eUkdI96zP64e7JQLgPpVvM9WKGa.jpg"
   },
   "los descendientes 2": {
     "id": 417320,
@@ -711,6 +804,12 @@
     "anio": "2011",
     "poster": "/eVEJypxPzc1Tox9BGVhgmrCaCbh.jpg"
   },
+  "el gato con botas 2": {
+    "id": 315162,
+    "titulo": "El Gato con Botas: El último deseo",
+    "anio": "2022",
+    "poster": "/b5Jb7GoQaqIXy4VEdnQa0UrQZI.jpg"
+  },
   "kung fu panda": {
     "id": 9502,
     "titulo": "Kung Fu Panda",
@@ -734,6 +833,18 @@
     "titulo": "Kung Fu Panda 4",
     "anio": "2024",
     "poster": "/2xgGWjM3a38E4KTLapvC53RnpN1.jpg"
+  },
+  "httyd 2": {
+    "id": 82702,
+    "titulo": "Cómo entrenar a tu dragón 2",
+    "anio": "2014",
+    "poster": "/bXcRw7FL8QzUZOvY2fZdwDv5ymQ.jpg"
+  },
+  "httyd 3": {
+    "id": 166428,
+    "titulo": "Cómo entrenar a tu dragón 3",
+    "anio": "2019",
+    "poster": "/rhnoAReqO3Xoe6GbJhT3409lnq8.jpg"
   },
   "hotel transilvania": {
     "id": 76492,
