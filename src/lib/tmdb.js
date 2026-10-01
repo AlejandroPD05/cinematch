@@ -1,7 +1,8 @@
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 const IMG_BASE = 'https://image.tmdb.org/t/p/w500';
-const CACHE_KEY = 'cinematch_posters_v8';
-const MAX_PARALELAS = 4;
+const CACHE_KEY = 'cinematch_posters_v9';
+const MAX_PARALELAS = 6;
+const UMBRAL = 0.7; // parecido mínimo de título para aceptar un póster
 
 /**
  * Películas que TMDB no encuentra bien buscando solo por el nombre del Sheets.
@@ -53,6 +54,50 @@ const normalizar = (texto) =>
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 
+// Números de un título ("ice age 2" → "2"), para no confundir secuelas.
+const numeros = (texto) => (texto.match(/\d+/g) || []).join(' ');
+
+// Parecido entre dos textos de 0 a 1 (coeficiente de Dice sobre pares de letras).
+function parecido(a, b) {
+  if (a === b) return 1;
+  if (a.length < 2 || b.length < 2) return 0;
+  const pares = new Map();
+  for (let i = 0; i < a.length - 1; i += 1) {
+    const par = a.slice(i, i + 2);
+    pares.set(par, (pares.get(par) || 0) + 1);
+  }
+  let comunes = 0;
+  for (let i = 0; i < b.length - 1; i += 1) {
+    const par = b.slice(i, i + 2);
+    const restantes = pares.get(par) || 0;
+    if (restantes > 0) {
+      pares.set(par, restantes - 1);
+      comunes += 1;
+    }
+  }
+  return (2 * comunes) / (a.length + b.length - 2);
+}
+
+// Puntúa un resultado de TMDB frente al título buscado (usa título en español y original).
+function puntuar(buscado, resultado) {
+  const nombres = [resultado.title, resultado.original_title].map(normalizar).filter(Boolean);
+  let mejor = 0;
+  nombres.forEach((nombre) => {
+    let puntos;
+    if (nombre === buscado) {
+      puntos = 1;
+    } else {
+      puntos = nombre.startsWith(`${buscado} `) ? 0.9 : parecido(buscado, nombre);
+      // Si los números no coinciden (Ice age 2 vs Ice age 3), casi seguro es otra película.
+      if (numeros(buscado) !== numeros(nombre)) puntos -= 0.3;
+    }
+    if (puntos > mejor) mejor = puntos;
+  });
+  return mejor;
+}
+
+const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // Caché en localStorage: { "titulo normalizado": "/abc123.jpg" | "" }
 function leerCache() {
   try {
@@ -77,9 +122,9 @@ const cola = [];
 function siguiente() {
   if (activas >= MAX_PARALELAS || cola.length === 0) return;
   const tarea = cola.shift();
-  activas++;
+  activas += 1;
   tarea().finally(() => {
-    activas--;
+    activas -= 1;
     siguiente();
   });
 }
@@ -91,10 +136,25 @@ function encolar(fn) {
   });
 }
 
-async function pedir(url) {
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${TOKEN}`, accept: 'application/json' },
-  });
+// Petición a TMDB con reintentos (útil con conexiones móviles flojas o límite de peticiones).
+async function pedir(url, intento = 0) {
+  let res;
+  try {
+    res = await fetch(url, {
+      headers: { Authorization: `Bearer ${TOKEN}`, accept: 'application/json' },
+    });
+  } catch (error) {
+    if (intento < 2) {
+      await esperar(700 * (intento + 1));
+      return pedir(url, intento + 1);
+    }
+    throw error;
+  }
+
+  if (res.status === 429 && intento < 2) {
+    await esperar(1000 * (intento + 1));
+    return pedir(url, intento + 1);
+  }
   if (!res.ok) throw new Error(`TMDB ${res.status}`);
   return res.json();
 }
@@ -114,19 +174,32 @@ async function posterPorTituloYAnio({ q, year }) {
   return primera ? primera.poster_path : '';
 }
 
-// Solo acepta una coincidencia EXACTA del título; si no, prefiere no poner póster.
+// Búsqueda por nombre: elige el resultado más parecido; si ninguno llega al umbral, no pone póster.
 async function posterPorBusqueda(titulo) {
   const data = await pedir(
     'https://api.themoviedb.org/3/search/movie?language=es-ES&include_adult=false&query=' +
       encodeURIComponent(titulo),
   );
   const buscado = normalizar(titulo);
-  const exacta = (data.results ?? []).find(
-    (r) =>
-      r.poster_path &&
-      (normalizar(r.title) === buscado || normalizar(r.original_title) === buscado),
-  );
-  return exacta ? exacta.poster_path : '';
+
+  const candidatos = (data.results ?? [])
+    .filter((r) => r.poster_path)
+    .map((r) => ({ r, puntos: puntuar(buscado, r) }))
+    .filter((c) => c.puntos >= UMBRAL)
+    .sort((a, b) => b.puntos - a.puntos || (b.r.vote_count || 0) - (a.r.vote_count || 0));
+
+  const elegido = candidatos[0];
+
+  if (import.meta.env.DEV) {
+    const anio = elegido ? (elegido.r.release_date || '').slice(0, 4) : '';
+    console.info(
+      elegido
+        ? `[CINEMATCH] "${buscado}" → "${elegido.r.title}" (${anio}) [${elegido.puntos.toFixed(2)}]`
+        : `[CINEMATCH] "${buscado}" → sin coincidencia`,
+    );
+  }
+
+  return elegido ? elegido.r.poster_path : '';
 }
 
 function buscarPath(titulo, override) {
@@ -154,7 +227,7 @@ export async function obtenerPoster(titulo) {
       }
       return path ? IMG_BASE + path : null;
     } catch {
-      // Fallo puntual de red: no se guarda en caché para reintentar la próxima vez
+      // Fallo de red tras los reintentos: no se guarda en caché para volver a intentarlo
       return null;
     }
   });

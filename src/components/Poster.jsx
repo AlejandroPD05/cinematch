@@ -28,39 +28,39 @@ export function PosterPlaceholder({ title, compact = false }) {
 }
 
 /**
- * Orden: carátula del Sheets → (si falla) póster de TMDB → placeholder.
- * stage: 'sheet' | 'tmdb' | 'failed'
+ * Orden: póster de TMDB → (si no hay o falla) carátula del Sheets → placeholder.
+ * stage: 'tmdb' | 'sheet' | 'failed'
  */
 function PosterInner({ src, title, eager = false, compact = false, className = '' }) {
-  const [stage, setStage] = useState(src ? 'sheet' : 'tmdb');
+  const [stage, setStage] = useState('tmdb');
   const [tmdbUrl, setTmdbUrl] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
-  // Solo busca en TMDB cuando la carátula del Sheets falta o ha fallado.
+  // Busca el póster en TMDB; si no hay, pasa a la carátula del Sheets.
   useEffect(() => {
     if (stage !== 'tmdb') return undefined;
     let cancelled = false;
     obtenerPoster(title).then((url) => {
       if (cancelled) return;
       if (url) setTmdbUrl(url);
-      else setStage('failed');
+      else setStage(src ? 'sheet' : 'failed');
     });
     return () => {
       cancelled = true;
     };
-  }, [stage, title]);
+  }, [stage, title, src]);
 
-  const finalSrc = stage === 'sheet' ? src : stage === 'tmdb' ? tmdbUrl : null;
+  const finalSrc = stage === 'tmdb' ? tmdbUrl : stage === 'sheet' ? src : null;
 
   const handleLoad = useCallback(() => setLoaded(true), []);
 
   const handleError = useCallback(() => {
     setLoaded(false);
     setStage((current) => {
-      if (current !== stage) return current;
-      return stage === 'sheet' ? 'tmdb' : 'failed';
+      if (current === 'tmdb') return src ? 'sheet' : 'failed';
+      return 'failed';
     });
-  }, [stage]);
+  }, [src]);
 
   // Imágenes ya en caché pueden estar completas antes de enganchar onLoad.
   const imgRef = useCallback(
