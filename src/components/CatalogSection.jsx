@@ -50,7 +50,7 @@ export default function CatalogSection({
             {results.length > 0 ? (
               <MovieGrid movies={results} onOpen={onOpen} />
             ) : (
-              <EmptyState onAction={reset} />
+              <EmptyState title={`No hemos encontrado ninguna ${labels.singular}.`} onAction={reset} />
             )}
           </div>
         </>
