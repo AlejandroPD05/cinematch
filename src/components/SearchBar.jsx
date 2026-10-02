@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 
 /** Buscador en tiempo real. Atajo: tecla "/" para enfocarlo. */
-export default function SearchBar({ value, onChange, className = '', id = 'buscar' }) {
+export default function SearchBar({ value, onChange, className = '', id = 'buscar', noun = 'película' }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function SearchBar({ value, onChange, className = '', id = 'busca
   return (
     <div className={`relative ${className}`}>
       <label htmlFor={id} className="sr-only">
-        Buscar película
+        Buscar {noun}
       </label>
       <Search
         className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-muted"
@@ -38,7 +38,7 @@ export default function SearchBar({ value, onChange, className = '', id = 'busca
             onChange('');
           }
         }}
-        placeholder="Buscar película"
+        placeholder={`Buscar ${noun}`}
         autoComplete="off"
         spellCheck={false}
         className="h-10 w-full rounded-full border border-white/10 bg-white/[0.04] pr-10 pl-10 text-sm text-fg placeholder:text-faint transition-colors outline-none hover:border-white/20 focus:border-brand/70 focus:bg-white/[0.06] [&::-webkit-search-cancel-button]:hidden"

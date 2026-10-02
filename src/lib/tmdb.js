@@ -1,4 +1,5 @@
 import IDS from './tmdbIds.json';
+import IDS_SERIES from './tmdbIdsSeries.json';
 import { OVERRIDES, UMBRAL, normalizar, puntuar } from './tmdbMatch.js';
 
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
@@ -128,9 +129,12 @@ export async function obtenerPoster(titulo) {
 
   const k = normalizar(titulo);
 
-  // 1. Guardado en tmdbIds.json: no necesita ninguna petición ni token.
-  const fijo = IDS[k];
+  // 1. Guardado en tmdbIds.json (películas) o tmdbIdsSeries.json (series): sin peticiones ni token.
+  const fijo = IDS[k] || IDS_SERIES[k];
   if (fijo && fijo.poster) return IMG_BASE + fijo.poster;
+
+  // Serie sin póster guardado: no se busca como película (saldría otra cosa).
+  if (IDS_SERIES[k] && !IDS[k]) return null;
 
   // 2. Resto: se busca en TMDB (necesita token)
   if (!TOKEN) return null;

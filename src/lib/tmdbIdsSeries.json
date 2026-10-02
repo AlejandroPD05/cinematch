@@ -1,0 +1,76 @@
+{
+  "cyberpunk edgerunners": {
+    "id": 105248,
+    "titulo": "Cyberpunk: Edgerunners",
+    "anio": "2022",
+    "poster": "/rNkilVmALgaIb4SenfbaecRStDD.jpg"
+  },
+  "blue eye samurai": {
+    "id": 225180,
+    "titulo": "Samurái de ojos azules",
+    "anio": "2023",
+    "poster": "/e6SS2QGSXOb4ifmGvTVt27Pt0bd.jpg"
+  },
+  "lrdf": {
+    "id": 80240,
+    "titulo": "La Reina del Flow",
+    "anio": "2018",
+    "poster": "/fuVuDYrs8sxvEolnYr0wCSvtyTi.jpg"
+  },
+  "one piece la": {
+    "id": 111110,
+    "titulo": "ONE PIECE",
+    "anio": "2023",
+    "poster": "/gCZ18cl7Pc4tgiwMPWHTgjABrhy.jpg"
+  },
+  "prehistoric planet": {
+    "id": 95171,
+    "titulo": "Planeta prehistórico",
+    "anio": "2022",
+    "poster": "/u7Ulem8hT8nKVPvYlTeNLoWXfvk.jpg",
+    "revisar": true
+  },
+  "los bridgerton": {
+    "id": 91239,
+    "titulo": "Los Bridgerton",
+    "anio": "2020",
+    "poster": "/4MQf8yWM47OVjjtxRdhc1SzoZVE.jpg"
+  },
+  "your lie in april": {
+    "id": 61663,
+    "titulo": "Your Lie in April",
+    "anio": "2014",
+    "poster": "/xswPti7YWJfvqFf52P5VAN1QMuJ.jpg"
+  },
+  "solo arise": {
+    "id": 127532,
+    "titulo": "Solo Leveling",
+    "anio": "2024",
+    "poster": "/eCD7WS9h4lCT8N4Xavc9u8R1IGk.jpg"
+  },
+  "la nobleza de las flores": {
+    "id": 271607,
+    "titulo": "La nobleza de las flores",
+    "anio": "2025",
+    "poster": "/e2zegxrA6tyT1nobxXoMTWlQjJf.jpg"
+  },
+  "the circle": {
+    "id": 97083,
+    "titulo": "The Circle: EE UU",
+    "anio": "2020",
+    "poster": "/fC79Ivm0FpGm10H9tsZ867B91vy.jpg",
+    "revisar": true
+  },
+  "off campus": {
+    "id": 273240,
+    "titulo": "Off Campus",
+    "anio": "2026",
+    "poster": "/pI4sEVVbswtyOL2uaFxZs2tPOnQ.jpg"
+  },
+  "the rising of the shield hero": {
+    "id": 83095,
+    "titulo": "The Rising of the Shield Hero",
+    "anio": "2019",
+    "poster": "/yX0d6aTjHrE5Sjp6gZ1dkPWCmIF.jpg"
+  }
+}

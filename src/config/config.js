@@ -37,6 +37,10 @@ export const GOOGLE_SHEET_GID = pick(env.VITE_GOOGLE_SHEET_GID, '0');
 // Opcional: URL CSV completa (p. ej. "Publicar en la web"). Tiene prioridad si existe.
 export const GOOGLE_SHEET_CSV_URL = pick(env.VITE_GOOGLE_SHEET_CSV_URL, '');
 
+// Pestaña de SERIES del mismo Sheets (por defecto, la pestaña con gid 0).
+export const GOOGLE_SHEET_GID_SERIES = pick(env.VITE_GOOGLE_SHEET_GID_SERIES, '0');
+export const GOOGLE_SHEET_CSV_URL_SERIES = pick(env.VITE_GOOGLE_SHEET_CSV_URL_SERIES, '');
+
 // Minutos que se reutilizan los datos dentro de la misma sesión del navegador.
 // El botón "Actualizar" siempre ignora la caché.
 export const CACHE_MINUTES = 10;

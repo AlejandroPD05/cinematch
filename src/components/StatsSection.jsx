@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { AGREEMENT_THRESHOLD, RATING_MAX } from '../config/config.js';
+import { getLabels } from '../utils/labels.js';
 import { formatPoints, formatRating } from '../utils/ratings.js';
 import { AverageRing } from './Rating.jsx';
 import SectionHeading from './SectionHeading.jsx';
@@ -25,16 +26,16 @@ function Tile({ index, label, value, note, className = '' }) {
   );
 }
 
-export default function StatsSection({ stats }) {
+export default function StatsSection({ stats, labels = getLabels('movies') }) {
   if (!stats || stats.total === 0) return null;
 
   const [first, second] = stats.people;
   const tiles = [
-    { label: 'Películas en la colección', value: stats.total, note: `${stats.ratedCount} con al menos una nota` },
+    { label: `${labels.Plural} en la colección`, value: stats.total, note: `${stats.ratedCount} con al menos una nota` },
     stats.agreementRate !== null && {
       label: 'Nivel de sintonía',
       value: `${stats.agreementRate}%`,
-      note: `Películas en las que nos separa ${formatPoints(AGREEMENT_THRESHOLD)} o menos`,
+      note: `${labels.Plural} en las que nos separa ${formatPoints(AGREEMENT_THRESHOLD)} o menos`,
     },
     stats.sharedCount > 0 && {
       label: 'Dieces de los dos',
@@ -53,7 +54,7 @@ export default function StatsSection({ stats }) {
       <SectionHeading
         id="stats-title"
         title="Nuestros números"
-        description="Calculado con las notas reales de la hoja. Se actualiza al añadir o editar películas."
+        description={`Calculado con las notas reales de la hoja. Se actualiza al añadir o editar ${labels.plural}.`}
       />
 
       <motion.div
@@ -75,7 +76,8 @@ export default function StatsSection({ stats }) {
           <div className="relative mt-5 flex items-center gap-5">
             <AverageRing value={stats.collectionAverage} size="lg" />
             <p className="max-w-[16rem] text-sm leading-relaxed text-muted">
-              La media de las medias de {stats.ratedCount} películas valoradas, sobre {RATING_MAX}.
+              La media de las medias de {stats.ratedCount} {labels.plural} valoradas, sobre {RATING_MAX}.
+              {labels.ratingNote}
             </p>
           </div>
 
@@ -88,7 +90,9 @@ export default function StatsSection({ stats }) {
                   <span className="ml-1 text-sm font-medium text-faint">/{RATING_MAX}</span>
                 </p>
                 <p className="mt-2 text-xs text-faint">
-                  {person.count === 1 ? '1 película puntuada' : `${person.count} películas puntuadas`}
+                  {person.count === 1
+                    ? `1 ${labels.singular} puntuada`
+                    : `${person.count} ${labels.plural} puntuadas`}
                 </p>
               </div>
             ))}

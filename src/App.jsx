@@ -13,6 +13,7 @@ import TopMovies from './components/TopMovies.jsx';
 import { APP_NAME, APP_TAGLINE, DUEL_LIMIT, TOP_LIMIT } from './config/config.js';
 import { useMovieFilters } from './hooks/useMovieFilters.js';
 import { useMovies } from './hooks/useMovies.js';
+import { getLabels } from './utils/labels.js';
 import { getAvailableFacets } from './utils/movieFilters.js';
 import {
   computeStats,
@@ -34,7 +35,11 @@ function scrollToCatalogIfNeeded() {
 }
 
 export default function App() {
-  const { status, movies, fetchedAt, refreshing, configError, notice, refresh, dismissNotice } = useMovies();
+  // 'movies' | 'series': qué pestaña del Sheets se está viendo
+  const [kind, setKind] = useState('movies');
+  const labels = useMemo(() => getLabels(kind), [kind]);
+  const { status, movies, fetchedAt, refreshing, configError, notice, refresh, dismissNotice } =
+    useMovies(kind);
   const filterState = useMovieFilters(movies);
   const [selected, setSelected] = useState(null);
 
@@ -67,6 +72,18 @@ export default function App() {
     [filters.query, setQuery],
   );
 
+  // Cambiar entre películas y series: cierra la ficha, limpia la búsqueda y sube al principio.
+  const handleKindChange = useCallback(
+    (next) => {
+      if (next === kind) return;
+      setKind(next);
+      setSelected(null);
+      setQuery('');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [kind, setQuery],
+  );
+
   // Si al actualizar la película abierta cambia o desaparece, la ficha usa los datos nuevos.
   const selectedMovie = useMemo(() => {
     if (!selected) return null;
@@ -92,6 +109,9 @@ export default function App() {
           onRefresh={refresh}
           refreshing={refreshing || (loading && fetchedAt !== null)}
           canRefresh={status !== 'loading'}
+          kind={kind}
+          onKindChange={handleKindChange}
+          labels={labels}
         />
 
         <main>
@@ -107,6 +127,7 @@ export default function App() {
                 collectionAverage={derived.stats.collectionAverage}
                 featured={derived.featured}
                 onOpen={openMovie}
+                labels={labels}
               />
 
               <div className="mx-auto max-w-[1680px] space-y-16 px-4 pt-6 sm:px-6 lg:space-y-20 lg:px-10">
@@ -118,11 +139,12 @@ export default function App() {
                   facets={derived.facets}
                   hasUnrated={derived.hasUnrated}
                   onOpen={openMovie}
+                  labels={labels}
                 />
 
                 {ready && movies.length > 0 && (
                   <>
-                    <StatsSection stats={derived.stats} />
+                    <StatsSection stats={derived.stats} labels={labels} />
                     <TopMovies movies={derived.top} onOpen={openMovie} />
                     <AgreementSection
                       agreements={derived.agreements}

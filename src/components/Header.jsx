@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { BarChart3, RefreshCw } from 'lucide-react';
+import { BarChart3, Film, RefreshCw, Tv } from 'lucide-react';
+import { getLabels } from '../utils/labels.js';
 import Logo from './Logo.jsx';
 import SearchBar from './SearchBar.jsx';
 
@@ -9,7 +10,50 @@ const NAV = [
   { href: '#estadisticas', label: 'Estadísticas' },
 ];
 
-export default function Header({ query, onQueryChange, onRefresh, refreshing, canRefresh }) {
+const KINDS = [
+  { value: 'movies', label: 'Películas', Icon: Film },
+  { value: 'series', label: 'Series', Icon: Tv },
+];
+
+/** Selector Películas | Series. */
+function KindSwitch({ kind, onChange, className = '' }) {
+  return (
+    <div
+      role="group"
+      aria-label="Tipo de contenido"
+      className={`items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 ${className}`}
+    >
+      {KINDS.map(({ value, label, Icon }) => {
+        const active = kind === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            onClick={() => onChange(value)}
+            aria-pressed={active}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold transition-colors ${
+              active ? 'bg-brand text-black' : 'text-muted hover:text-fg'
+            }`}
+          >
+            <Icon className="h-4 w-4" aria-hidden="true" />
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+export default function Header({
+  query,
+  onQueryChange,
+  onRefresh,
+  refreshing,
+  canRefresh,
+  kind,
+  onKindChange,
+  labels = getLabels('movies'),
+}) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -43,11 +87,14 @@ export default function Header({ query, onQueryChange, onRefresh, refreshing, ca
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <KindSwitch kind={kind} onChange={onKindChange} className="mr-1 hidden lg:flex" />
+
           <SearchBar
             id="buscar-escritorio"
             value={query}
             onChange={onQueryChange}
-            className="hidden w-64 sm:block lg:w-80"
+            noun={labels.singular}
+            className="hidden w-64 sm:block"
           />
 
           <a
@@ -71,9 +118,12 @@ export default function Header({ query, onQueryChange, onRefresh, refreshing, ca
         </div>
       </div>
 
-      {/* Buscador a ancho completo en móvil */}
-      <div className="mx-auto max-w-[1680px] px-4 pb-3 sm:hidden">
-        <SearchBar id="buscar-movil" value={query} onChange={onQueryChange} />
+      {/* Selector (pantallas pequeñas y medianas) y buscador a ancho completo en móvil */}
+      <div className="mx-auto flex max-w-[1680px] flex-col gap-2 px-4 pb-3 lg:hidden">
+        <KindSwitch kind={kind} onChange={onKindChange} className="flex w-fit" />
+        <div className="sm:hidden">
+          <SearchBar id="buscar-movil" value={query} onChange={onQueryChange} noun={labels.singular} />
+        </div>
       </div>
     </header>
   );

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { COLLECTION_DESCRIPTION, COLLECTION_NAME, RATING_MAX } from '../config/config.js';
+import { getLabels } from '../utils/labels.js';
 import { formatRating } from '../utils/ratings.js';
 import FeaturedMovie from './FeaturedMovie.jsx';
 
@@ -7,7 +8,14 @@ import FeaturedMovie from './FeaturedMovie.jsx';
  * Cabecera compacta: la colección a la izquierda, la película destacada a la derecha.
  * El fondo es la carátula destacada desenfocada (sin imagen rota si falla: es un background CSS).
  */
-export default function Hero({ total, collectionAverage, featured, onOpen, loading }) {
+export default function Hero({
+  total,
+  collectionAverage,
+  featured,
+  onOpen,
+  loading,
+  labels = getLabels('movies'),
+}) {
   const backdrop = featured?.poster;
 
   return (
@@ -36,9 +44,9 @@ export default function Hero({ total, collectionAverage, featured, onOpen, loadi
             {loading ? (
               <span className="inline-block h-[1em] w-64 animate-pulse rounded-lg bg-white/[0.06] align-middle" />
             ) : total === 1 ? (
-              '1 película que hemos visto juntos.'
+              `1 ${labels.singular} que hemos visto juntos.`
             ) : (
-              `${total} películas que hemos visto juntos.`
+              `${total} ${labels.plural} que hemos visto juntos.`
             )}
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted sm:text-base">{COLLECTION_DESCRIPTION}</p>
@@ -51,7 +59,7 @@ export default function Hero({ total, collectionAverage, featured, onOpen, loadi
           )}
         </motion.div>
 
-        {!loading && <FeaturedMovie movie={featured} onOpen={onOpen} />}
+        {!loading && <FeaturedMovie movie={featured} onOpen={onOpen} labels={labels} />}
       </div>
     </section>
   );

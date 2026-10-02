@@ -1,16 +1,17 @@
 import { COLUMN_ALIASES, EXTRA_FIELDS, PEOPLE } from '../config/config.js';
 import { parseCsv } from './csv.js';
-import { averageOf, parseRating, ratingDifference } from './ratings.js';
+import { averageOf, parseRating, parseSeasonRatings, ratingDifference } from './ratings.js';
 import { containsPhrase, extractUrl, isUrlLike, normalizeText, slugify } from './text.js';
 
 /**
- * Modelo de película:
+ * Modelo de película o serie:
  * {
  *   id: string,              // estable dentro de la carga (título + fila)
  *   order: number,           // posición original en el Sheets
  *   title: string,
  *   poster: string | null,   // URL; si falla, la web muestra un placeholder
- *   ratings: { person1: number|null, person2: number|null },
+ *   ratings: { person1: number|null, person2: number|null },   // series: media de temporadas
+ *   seasons: [{ number, ratings: { person1, person2 } }],      // solo series con 2+ temporadas
  *   average: number | null,
  *   difference: number | null,
  *   details: { saga?, genre?, year?, ... }   // solo si existe la columna
@@ -159,10 +160,24 @@ function rowToMovie(row, map, order) {
   if (!title) return null;
 
   const ratings = {};
+  const seasonLists = {};
   PEOPLE.forEach((person) => {
     const index = map.people[person.key];
-    ratings[person.key] = index === undefined ? null : parseRating(cellAt(row, index));
+    const raw = index === undefined ? '' : cellAt(row, index);
+    // Si hay varias temporadas ("8/10 - 10/10"), la nota es la media de ellas.
+    ratings[person.key] = index === undefined ? null : parseRating(raw);
+    seasonLists[person.key] = parseSeasonRatings(raw);
   });
+
+  // Desglose por temporada: solo si alguien tiene 2 o más notas en la celda.
+  const seasonCount = Math.max(0, ...PEOPLE.map((p) => seasonLists[p.key].length));
+  const seasons =
+    seasonCount > 1
+      ? Array.from({ length: seasonCount }, (_, i) => ({
+          number: i + 1,
+          ratings: Object.fromEntries(PEOPLE.map((p) => [p.key, seasonLists[p.key][i] ?? null])),
+        }))
+      : [];
 
   const details = {};
   const extra = [];
@@ -179,6 +194,7 @@ function rowToMovie(row, map, order) {
     title,
     poster: extractUrl(cellAt(row, map.poster)),
     ratings,
+    seasons,
     average: averageOf(Object.values(ratings)),
     difference: ratingDifference(ratings),
     details,

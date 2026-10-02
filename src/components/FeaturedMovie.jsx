@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { Play, Trophy } from 'lucide-react';
+import { getLabels } from '../utils/labels.js';
 import Poster from './Poster.jsx';
 import { ScoreDuel } from './Rating.jsx';
 
 /** La mejor valorada de la colección. Si no hay notas, no se muestra. */
-export default function FeaturedMovie({ movie, onOpen }) {
+export default function FeaturedMovie({ movie, onOpen, labels = getLabels('movies') }) {
   if (!movie) return null;
 
   return (
@@ -44,7 +45,7 @@ export default function FeaturedMovie({ movie, onOpen }) {
           className="mt-3 inline-flex w-fit items-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-bold text-black transition-colors hover:bg-brand-bright"
         >
           <Play className="h-4 w-4 fill-current" aria-hidden="true" />
-          Ver película
+          Ver {labels.singular}
         </button>
       </div>
     </motion.div>

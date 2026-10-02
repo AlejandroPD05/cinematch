@@ -1,10 +1,13 @@
 import { PEOPLE, RATING_MAX, RATING_TIERS } from '../config/config.js';
 
+// Separador entre temporadas: "8/10 - 10/10 - 7/10" (guion normal, medio o largo).
+const SEASON_SEPARATOR = /\s*[-–—]\s*/;
+
 /**
- * Normaliza una nota del Sheets a número o null.
- * "10/10" → 10 · "7.5/10" → 7.5 · "7,5" → 7.5 · "8" → 8 · "" → null · "abc" → null
+ * Normaliza UNA nota del Sheets a número o null.
+ * "10/10" → 10 · "7.5/10" → 7.5 · "7,5" → 7.5 · "8" → 8 · "" → null · "?/10" → null
  */
-export function parseRating(raw) {
+function parseSingleRating(raw) {
   if (raw === null || raw === undefined) return null;
   if (typeof raw === 'number') {
     return Number.isFinite(raw) && raw >= 0 && raw <= RATING_MAX ? raw : null;
@@ -20,6 +23,28 @@ export function parseRating(raw) {
   const value = Number.parseFloat(match[1]);
   if (!Number.isFinite(value) || value < 0 || value > RATING_MAX) return null;
   return Math.round(value * 100) / 100;
+}
+
+/**
+ * Notas por temporada: "8/10 - ?/10 - 7/10" → [8, null, 7].
+ * Una película → [nota]. Celda vacía → [].
+ */
+export function parseSeasonRatings(raw) {
+  if (raw === null || raw === undefined) return [];
+  if (typeof raw === 'number') return [parseSingleRating(raw)];
+  const text = String(raw).trim();
+  if (!text) return [];
+  return text.split(SEASON_SEPARATOR).map(parseSingleRating);
+}
+
+/**
+ * Nota de una película o serie, como número o null.
+ * Película: su nota. Serie con varias temporadas: la media de las que tienen nota.
+ */
+export function parseRating(raw) {
+  const seasons = parseSeasonRatings(raw);
+  if (seasons.length <= 1) return seasons[0] ?? null;
+  return averageOf(seasons);
 }
 
 /** Media de las notas existentes. Si no hay ninguna, null (nunca una media falsa). */

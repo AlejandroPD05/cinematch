@@ -1,13 +1,23 @@
+import { getLabels } from '../utils/labels.js';
 import EmptyState from './EmptyState.jsx';
 import FilterBar from './FilterBar.jsx';
 import MovieGrid from './MovieGrid.jsx';
 import { SkeletonGrid } from './SkeletonCard.jsx';
 
-export default function CatalogSection({ loading, allCount, results, filterState, facets, hasUnrated, onOpen }) {
+export default function CatalogSection({
+  loading,
+  allCount,
+  results,
+  filterState,
+  facets,
+  hasUnrated,
+  onOpen,
+  labels = getLabels('movies'),
+}) {
   const { filters, isDefault, setTier, setSort, setFacet, reset } = filterState;
 
   return (
-    <section id="catalogo" aria-label="Catálogo de películas" className="scroll-mt-32">
+    <section id="catalogo" aria-label={`Catálogo de ${labels.plural}`} className="scroll-mt-32">
       {loading ? (
         <>
           <div className="mb-5 flex gap-2" aria-hidden="true">
@@ -19,7 +29,7 @@ export default function CatalogSection({ loading, allCount, results, filterState
         </>
       ) : allCount === 0 ? (
         <EmptyState
-          title="Todavía no hay películas en la hoja."
+          title={`Todavía no hay ${labels.plural} en la hoja.`}
           description="Añadid la primera en Google Sheets y pulsad el botón de actualizar."
         />
       ) : (
@@ -34,6 +44,7 @@ export default function CatalogSection({ loading, allCount, results, filterState
             resultCount={results.length}
             hasUnrated={hasUnrated}
             facets={facets}
+            labels={labels}
           />
           <div className="mt-4">
             {results.length > 0 ? (

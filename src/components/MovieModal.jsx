@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Hash, X } from 'lucide-react';
 import { PEOPLE } from '../config/config.js';
 import { useModalA11y } from '../hooks/useModalA11y.js';
-import { formatPoints, matchPercent } from '../utils/ratings.js';
+import { formatPoints, formatRating, matchPercent } from '../utils/ratings.js';
 import Poster from './Poster.jsx';
 import { ScoreDuel } from './Rating.jsx';
 
@@ -22,6 +22,46 @@ function AgreementLine({ movie }) {
       <span className="font-semibold text-fg">Match {matchPercent(movie.difference)}%</span>, con{' '}
       {formatPoints(movie.difference)} de diferencia.
     </p>
+  );
+}
+
+/** Nota de cada uno en cada temporada (solo series con 2 o más temporadas). */
+function SeasonsTable({ seasons }) {
+  return (
+    <div className="mt-4 rounded-2xl border border-white/10 bg-black/35 p-5 backdrop-blur-sm">
+      <h3 className="text-xs font-semibold text-muted">Nota por temporada</h3>
+      <table className="mt-3 w-full text-sm">
+        <thead>
+          <tr className="text-xs text-faint">
+            <th scope="col" className="pb-2 text-left font-medium">
+              Temporada
+            </th>
+            {PEOPLE.map((person) => (
+              <th key={person.key} scope="col" className="pb-2 text-right font-medium">
+                {person.name}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-white/[0.06]">
+          {seasons.map((season) => (
+            <tr key={season.number}>
+              <th scope="row" className="py-2 text-left font-medium text-fg/90">
+                Temporada {season.number}
+              </th>
+              {PEOPLE.map((person) => (
+                <td
+                  key={person.key}
+                  className="py-2 text-right font-display font-semibold text-brand-bright tabular"
+                >
+                  {formatRating(season.ratings[person.key], { withMax: true })}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -102,6 +142,8 @@ function ModalContent({ movie, rank, onClose }) {
                 <AgreementLine movie={movie} />
               </div>
             </div>
+
+            {movie.seasons?.length > 0 && <SeasonsTable seasons={movie.seasons} />}
 
             {movie.extra.length > 0 && (
               <dl className="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">

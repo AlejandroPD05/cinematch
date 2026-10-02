@@ -10,7 +10,7 @@ export const normalizar = (texto) =>
     .trim();
 
 /**
- * Películas que TMDB no encuentra bien buscando solo por el nombre del Sheets.
+ * PELÍCULAS que TMDB no encuentra bien buscando solo por el nombre del Sheets.
  * Clave: el título tal como está en el Sheets (se normaliza solo: da igual
  * mayúsculas, tildes o signos).
  * Valor: puede ser
@@ -73,10 +73,23 @@ const OVERRIDES_SIN_NORMALIZAR = {
   grase: { q: 'Grease', year: 1978 },
 };
 
+/**
+ * SERIES que TMDB no encuentra bien buscando solo por el nombre del Sheets.
+ * Mismo formato, pero el ID es el de series: themoviedb.org/tv/ID-nombre
+ * Ejemplo: 'nombre en el sheets': 12345,
+ */
+const OVERRIDES_SERIES_SIN_NORMALIZAR = {
+  lrdf: { q: 'La Reina del Flow', year: 2018 },
+  'one piece la': { q: 'One Piece', year: 2023 },
+  'solo arise': { q: 'Solo Leveling', year: 2024 },
+};
+
+const normalizarClaves = (objeto) =>
+  Object.fromEntries(Object.entries(objeto).map(([clave, valor]) => [normalizar(clave), valor]));
+
 // Normaliza todas las claves para que coincidan siempre con el título del Sheets.
-export const OVERRIDES = Object.fromEntries(
-  Object.entries(OVERRIDES_SIN_NORMALIZAR).map(([clave, valor]) => [normalizar(clave), valor]),
-);
+export const OVERRIDES = normalizarClaves(OVERRIDES_SIN_NORMALIZAR);
+export const OVERRIDES_SERIES = normalizarClaves(OVERRIDES_SERIES_SIN_NORMALIZAR);
 
 // Números de un título ("ice age 2" → "2"), para no confundir secuelas.
 const numeros = (texto) => (texto.match(/\d+/g) || []).join(' ');
@@ -102,9 +115,15 @@ function parecido(a, b) {
   return (2 * comunes) / (a.length + b.length - 2);
 }
 
-// Puntúa un resultado de TMDB frente al título buscado (usa título en español y original).
+// Puntúa un resultado de TMDB (película o serie) frente al título buscado.
 export function puntuar(buscado, resultado) {
-  const nombres = [resultado.title, resultado.original_title].map(normalizar).filter(Boolean);
+  const nombres = [
+    resultado.title ?? resultado.name,
+    resultado.original_title ?? resultado.original_name,
+  ]
+    .map(normalizar)
+    .filter(Boolean);
+
   let mejor = 0;
   nombres.forEach((nombre) => {
     let puntos;

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowDownUp, RotateCcw } from 'lucide-react';
+import { getLabels } from '../utils/labels.js';
 import { SORT_OPTIONS, TIER_OPTIONS } from '../utils/movieFilters.js';
 
 function Select({ label, value, onChange, children, icon: Icon }) {
@@ -35,6 +36,7 @@ export default function FilterBar({
   resultCount,
   hasUnrated,
   facets,
+  labels = getLabels('movies'),
 }) {
   const tiers = TIER_OPTIONS.filter((t) => !t.onlyIfPresent || hasUnrated);
 
@@ -101,7 +103,7 @@ export default function FilterBar({
       <div className="flex min-h-7 items-center justify-between gap-3">
         <p className="text-sm text-muted" aria-live="polite">
           <span className="font-semibold text-fg tabular">{resultCount}</span>{' '}
-          {resultCount === 1 ? 'película encontrada' : 'películas encontradas'}
+          {resultCount === 1 ? `${labels.singular} encontrada` : `${labels.plural} encontradas`}
         </p>
         {!isDefault && (
           <motion.button

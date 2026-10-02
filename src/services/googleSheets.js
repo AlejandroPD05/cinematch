@@ -1,35 +1,44 @@
 import {
   CACHE_MINUTES,
   GOOGLE_SHEET_CSV_URL,
+  GOOGLE_SHEET_CSV_URL_SERIES,
   GOOGLE_SHEET_GID,
+  GOOGLE_SHEET_GID_SERIES,
   GOOGLE_SHEET_ID,
 } from '../config/config.js';
 import { parseMoviesCsv } from '../utils/movieParser.js';
 
 /**
  * Lee el Google Sheets como CSV. Solo lectura: la web nunca escribe en la hoja.
+ * kind: 'movies' (pestaña de películas) | 'series' (pestaña de series)
  *
  * Orden de intento:
- *   1. VITE_GOOGLE_SHEET_CSV_URL (si existe)
+ *   1. URL CSV propia (si existe)
  *   2. /export?format=csv    → valores exactos tal y como se ven en la hoja
  *   3. /gviz/tq?tqx=out:csv  → respaldo con CORS muy estable
  */
 
-const CACHE_KEY = `cinematch:sheet:${GOOGLE_SHEET_CSV_URL || `${GOOGLE_SHEET_ID}:${GOOGLE_SHEET_GID}`}`;
 const REQUEST_TIMEOUT_MS = 15000;
+
+const isSeries = (kind) => kind === 'series';
+const csvUrlOf = (kind) => (isSeries(kind) ? GOOGLE_SHEET_CSV_URL_SERIES : GOOGLE_SHEET_CSV_URL);
+const gidOf = (kind) => (isSeries(kind) ? GOOGLE_SHEET_GID_SERIES : GOOGLE_SHEET_GID);
+const cacheKeyOf = (kind) =>
+  `cinematch:sheet:${kind}:${csvUrlOf(kind) || `${GOOGLE_SHEET_ID}:${gidOf(kind)}`}`;
 
 export class SheetConfigError extends Error {}
 
-export function isSheetConfigured() {
-  return Boolean(GOOGLE_SHEET_CSV_URL || GOOGLE_SHEET_ID);
+export function isSheetConfigured(kind = 'movies') {
+  return Boolean(csvUrlOf(kind) || GOOGLE_SHEET_ID);
 }
 
-export function getSheetUrls() {
+export function getSheetUrls(kind = 'movies') {
   const urls = [];
-  if (GOOGLE_SHEET_CSV_URL) urls.push(GOOGLE_SHEET_CSV_URL);
+  const csvUrl = csvUrlOf(kind);
+  if (csvUrl) urls.push(csvUrl);
   if (GOOGLE_SHEET_ID) {
     const id = encodeURIComponent(GOOGLE_SHEET_ID);
-    const gid = encodeURIComponent(GOOGLE_SHEET_GID || '0');
+    const gid = encodeURIComponent(gidOf(kind) || '0');
     urls.push(`https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`);
     urls.push(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&gid=${gid}`);
   }
@@ -62,9 +71,9 @@ async function fetchText(url) {
   }
 }
 
-function readCache() {
+function readCache(kind) {
   try {
-    const raw = sessionStorage.getItem(CACHE_KEY);
+    const raw = sessionStorage.getItem(cacheKeyOf(kind));
     if (!raw) return null;
     const cached = JSON.parse(raw);
     if (!cached?.csv || Date.now() - cached.savedAt > CACHE_MINUTES * 60 * 1000) return null;
@@ -74,10 +83,10 @@ function readCache() {
   }
 }
 
-function writeCache(csv) {
+function writeCache(kind, csv) {
   const entry = { csv, savedAt: Date.now() };
   try {
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify(entry));
+    sessionStorage.setItem(cacheKeyOf(kind), JSON.stringify(entry));
   } catch {
     // Sin sessionStorage (modo privado estricto): la app funciona igual, solo sin caché.
   }
@@ -87,16 +96,17 @@ function writeCache(csv) {
 /**
  * Devuelve { movies, columns, fetchedAt, fromCache }.
  * force = true ignora la caché (botón "Actualizar").
+ * kind = 'movies' | 'series'
  */
-export async function loadMovies({ force = false } = {}) {
-  if (!isSheetConfigured()) {
+export async function loadMovies({ force = false, kind = 'movies' } = {}) {
+  if (!isSheetConfigured(kind)) {
     throw new SheetConfigError(
       'Falta VITE_GOOGLE_SHEET_ID en el archivo .env (o en las variables de entorno de Vercel).',
     );
   }
 
   if (!force) {
-    const cached = readCache();
+    const cached = readCache(kind);
     if (cached) {
       const parsed = parseMoviesCsv(cached.csv);
       if (parsed.movies.length > 0) return { ...parsed, fetchedAt: cached.savedAt, fromCache: true };
@@ -104,16 +114,16 @@ export async function loadMovies({ force = false } = {}) {
   }
 
   const errors = [];
-  for (const url of getSheetUrls()) {
+  for (const url of getSheetUrls(kind)) {
     try {
       const csv = await fetchText(url);
       const parsed = parseMoviesCsv(csv);
       if (parsed.columns?.title === -1) {
         throw new Error('No se ha encontrado una columna con los nombres de las películas.');
       }
-      const entry = writeCache(csv);
+      const entry = writeCache(kind, csv);
       if (import.meta.env?.DEV) {
-        console.info(`[CINEMATCH] ${parsed.movies.length} películas leídas desde ${url}`, parsed.columns);
+        console.info(`[CINEMATCH] ${parsed.movies.length} (${kind}) leídas desde ${url}`, parsed.columns);
       }
       return { ...parsed, fetchedAt: entry.savedAt, fromCache: false };
     } catch (error) {

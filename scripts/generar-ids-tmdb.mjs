@@ -1,13 +1,31 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { parseMoviesCsv } from '../src/utils/movieParser.js';
-import { OVERRIDES, UMBRAL, normalizar, puntuar } from '../src/lib/tmdbMatch.js';
+import {
+  OVERRIDES,
+  OVERRIDES_SERIES,
+  UMBRAL,
+  normalizar,
+  puntuar,
+} from '../src/lib/tmdbMatch.js';
 
 const API = 'https://api.themoviedb.org/3';
+const ES_SERIE = process.argv.includes('--series');
+const TIPO = ES_SERIE ? 'tv' : 'movie';
+const NOMBRE_PLURAL = ES_SERIE ? 'series' : 'películas';
+
 const TOKEN = process.env.VITE_TMDB_TOKEN;
 const SHEET_ID = process.env.VITE_GOOGLE_SHEET_ID;
-const SHEET_GID = process.env.VITE_GOOGLE_SHEET_GID || '0';
-const CSV_URL = process.env.VITE_GOOGLE_SHEET_CSV_URL;
-const SALIDA = new URL('../src/lib/tmdbIds.json', import.meta.url);
+const SHEET_GID =
+  (ES_SERIE ? process.env.VITE_GOOGLE_SHEET_GID_SERIES : process.env.VITE_GOOGLE_SHEET_GID) || '0';
+const CSV_URL = ES_SERIE
+  ? process.env.VITE_GOOGLE_SHEET_CSV_URL_SERIES
+  : process.env.VITE_GOOGLE_SHEET_CSV_URL;
+
+const OVERRIDES_USADOS = ES_SERIE ? OVERRIDES_SERIES : OVERRIDES;
+const ARCHIVO = ES_SERIE ? 'src/lib/tmdbIdsSeries.json' : 'src/lib/tmdbIds.json';
+const SALIDA = new URL(`../${ARCHIVO}`, import.meta.url);
+// En TMDB el filtro de año se llama distinto en películas y en series.
+const PARAM_ANIO = ES_SERIE ? 'first_air_date_year' : 'primary_release_year';
 
 function salir(mensaje) {
   console.error(`\n✖ ${mensaje}\n`);
@@ -15,7 +33,7 @@ function salir(mensaje) {
 }
 
 if (!TOKEN) salir('Falta VITE_TMDB_TOKEN en el archivo .env');
-if (!CSV_URL && !SHEET_ID) salir('Falta VITE_GOOGLE_SHEET_ID (o VITE_GOOGLE_SHEET_CSV_URL) en el archivo .env');
+if (!CSV_URL && !SHEET_ID) salir('Falta VITE_GOOGLE_SHEET_ID (o una URL CSV) en el archivo .env');
 
 const esperar = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const anioDe = (fecha) => (fecha || '').slice(0, 4);
@@ -32,16 +50,17 @@ async function pedir(url, intento = 0) {
   return res.json();
 }
 
-// Lo que se guarda por película: ID, título, año y ruta del póster.
+// Lo que se guarda por título: ID, título, año y ruta del póster.
+// (Las películas usan "title" y "release_date"; las series, "name" y "first_air_date".)
 const entrada = (d, extra = {}) => ({
   id: d.id,
-  titulo: d.title,
-  anio: anioDe(d.release_date),
+  titulo: d.title ?? d.name,
+  anio: anioDe(d.release_date ?? d.first_air_date),
   poster: d.poster_path || null,
   ...extra,
 });
 
-async function leerPeliculas() {
+async function leerTitulos() {
   const url =
     CSV_URL ||
     `https://docs.google.com/spreadsheets/d/${encodeURIComponent(SHEET_ID)}/export?format=csv&gid=${encodeURIComponent(SHEET_GID)}`;
@@ -54,24 +73,24 @@ async function leerPeliculas() {
   return parseMoviesCsv(texto).movies;
 }
 
-// Decide qué película de TMDB corresponde a cada título del Sheets.
-async function resolver(pelicula, k, previo) {
-  // 1. Corregida a mano: se respeta el ID y solo se refrescan los datos.
+// Decide qué resultado de TMDB corresponde a cada título del Sheets.
+async function resolver(item, k, previo) {
+  // 1. Corregido a mano: se respeta el ID y solo se refrescan los datos.
   if (previo?.manual && previo.id) {
-    return entrada(await pedir(`${API}/movie/${previo.id}?language=es-ES`), { manual: true });
+    return entrada(await pedir(`${API}/${TIPO}/${previo.id}?language=es-ES`), { manual: true });
   }
 
-  const override = OVERRIDES[k];
+  const override = OVERRIDES_USADOS[k];
 
   // 2. Override por ID
   if (typeof override === 'number') {
-    return entrada(await pedir(`${API}/movie/${override}?language=es-ES`));
+    return entrada(await pedir(`${API}/${TIPO}/${override}?language=es-ES`));
   }
 
   // 3. Override por título y año
   if (override && override.q) {
     const data = await pedir(
-      `${API}/search/movie?language=es-ES&include_adult=false&primary_release_year=${override.year}` +
+      `${API}/search/${TIPO}?language=es-ES&include_adult=false&${PARAM_ANIO}=${override.year}` +
         `&query=${encodeURIComponent(override.q)}`,
     );
     const primera = (data.results ?? []).find((r) => r.poster_path);
@@ -79,11 +98,11 @@ async function resolver(pelicula, k, previo) {
   }
 
   // 4. Búsqueda por parecido de título (con el año del Sheets si existe esa columna)
-  const anioSheet = String(pelicula.details?.year ?? '').match(/\d{4}/)?.[0];
+  const anioSheet = String(item.details?.year ?? '').match(/\d{4}/)?.[0];
   const data = await pedir(
-    `${API}/search/movie?language=es-ES&include_adult=false` +
-      (anioSheet ? `&primary_release_year=${anioSheet}` : '') +
-      `&query=${encodeURIComponent(pelicula.title)}`,
+    `${API}/search/${TIPO}?language=es-ES&include_adult=false` +
+      (anioSheet ? `&${PARAM_ANIO}=${anioSheet}` : '') +
+      `&query=${encodeURIComponent(item.title)}`,
   );
 
   const candidatos = (data.results ?? [])
@@ -95,7 +114,7 @@ async function resolver(pelicula, k, previo) {
   const [mejor, segundo] = candidatos;
   if (!mejor) return null;
 
-  // Dudosa si el parecido no es casi exacto, o si hay otra película igual de parecida.
+  // Dudosa si el parecido no es casi exacto, o si hay otra igual de parecida.
   const dudosa =
     mejor.puntos < 0.9 ||
     Boolean(segundo && segundo.r.id !== mejor.r.id && segundo.puntos >= mejor.puntos - 0.02);
@@ -111,27 +130,29 @@ async function main() {
     // Primera vez: aún no hay archivo
   }
 
-  const peliculas = await leerPeliculas();
-  console.log(`\nLeídas ${peliculas.length} películas del Sheets. Buscando en TMDB...\n`);
+  const items = await leerTitulos();
+  console.log(`\nLeídas ${items.length} ${NOMBRE_PLURAL} del Sheets. Buscando en TMDB...\n`);
 
   const resultado = {};
   const dudosas = [];
   const sinCoincidencia = [];
 
-  for (const pelicula of peliculas) {
-    const k = normalizar(pelicula.title);
+  for (const item of items) {
+    const k = normalizar(item.title);
     if (!k || k in resultado) continue;
 
     try {
-      const dato = await resolver(pelicula, k, existentes[k]);
+      const dato = await resolver(item, k, existentes[k]);
       if (dato) {
         resultado[k] = dato;
-        if (dato.revisar) dudosas.push({ sheets: pelicula.title, tmdb: `${dato.titulo} (${dato.anio})`, id: dato.id });
+        if (dato.revisar) {
+          dudosas.push({ sheets: item.title, tmdb: `${dato.titulo} (${dato.anio})`, id: dato.id });
+        }
       } else {
-        sinCoincidencia.push(pelicula.title);
+        sinCoincidencia.push(item.title);
       }
     } catch (error) {
-      sinCoincidencia.push(`${pelicula.title} (error: ${error.message})`);
+      sinCoincidencia.push(`${item.title} (error: ${error.message})`);
     }
     await esperar(120);
   }
@@ -139,7 +160,7 @@ async function main() {
   await writeFile(SALIDA, `${JSON.stringify(resultado, null, 2)}\n`, 'utf8');
 
   const total = Object.keys(resultado).length;
-  console.log(`✔ Guardadas ${total} películas en src/lib/tmdbIds.json`);
+  console.log(`✔ Guardadas ${total} ${NOMBRE_PLURAL} en ${ARCHIVO}`);
   console.log(`  · ${total - dudosas.length} seguras, ${dudosas.length} a revisar, ${sinCoincidencia.length} sin coincidencia\n`);
 
   if (dudosas.length > 0) {
