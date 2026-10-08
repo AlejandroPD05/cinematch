@@ -102,3 +102,59 @@
 @utility tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/* ─────────────── Ficha de detalle ─────────────── */
+
+/**
+ * El fondo de la ficha se desenfoca de forma gradual, en paralelo con la
+ * entrada del panel, y llega al 100 % al terminar ésta (350 ms, la misma
+ * duración y curva que su `transition`, así que avanzan sincronizados).
+ *
+ * `from` es `none` y no `blur(0px)` a propósito: el minificador convierte
+ * `blur(0px)` en `blur()`, que es inválido, descarta la declaración y la
+ * animación deja de interpolar (comprobado: los keyframes del build salían
+ * con cssText vacío). `none` sí interpola con cualquier radio y, de paso, es
+ * el estado en el que backdrop-filter no existe y no cuesta nada.
+ *
+ * Coste medido sin aceleración por hardware, con el click dentro de la propia
+ * página (medirlo con page.click() de Playwright da resultados falsos: puede
+ * caer fuera de la ventana y entonces se mide el reposo del catálogo):
+ *
+ *   blur desde el 1er fotograma, fijo      ~87 fps, 12 caídas  (antes)
+ *   ausente 200 ms y luego salto           ~92 fps,  8 caídas  (versión previa)
+ *   rampa 0→350 ms (esto)                  ~91 fps, 10 caídas  (ahora)
+ *
+ * El coste no va en función del radio — blur(0px) cuesta lo mismo que
+ * blur(12px) — sino del tiempo que backdrop-filter existe mientras la ficha
+ * se monta; por eso una rampa de 350 ms sale a precio de la versión previa
+ * y una de 500 ms no (medida: 88 fps). Con aceleración por hardware, que es
+ * lo normal, todo esto vale 0.
+ */
+/* Los prefijos -webkit- no se escriben a mano: el compilador los añade. Escribir
+   ambos aquí hace que Lightning CSS deduplique dentro de los keyframes y se
+   quede sólo con el prefijado, que Firefox no entiende. */
+@keyframes modal-backdrop-in {
+  from {
+    backdrop-filter: none;
+  }
+  to {
+    backdrop-filter: blur(var(--blur-md, 12px));
+  }
+}
+
+.cm-modal-backdrop {
+  /* ease-in-out = cubic-bezier(0.42, 0, 0.58, 1), la misma curva que EASE en
+     MovieModal.jsx: el desenfoque y el panel avanzan parejos y terminan a la
+     vez. Con la curva fast-out anterior estaba al 88 % a los 127 ms de los
+     350 — saltaba y se arrastraba en vez de rampar. */
+  animation: modal-backdrop-in 350ms cubic-bezier(0.42, 0, 0.58, 1) both;
+}
+
+/* Con movimiento reducido no hay entrada que sincronizar: se aplica el
+   desenfoque definitivo desde el primer fotograma. La clase `backdrop-blur-md`
+   del elemento ya lo trae, así que basta con no animar. */
+@media (prefers-reduced-motion: reduce) {
+  .cm-modal-backdrop {
+    animation: none;
+  }
+}

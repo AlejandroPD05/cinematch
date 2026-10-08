@@ -6,7 +6,18 @@ import { formatPoints, formatRating, matchPercent } from '../utils/ratings.js';
 import Poster from './Poster.jsx';
 import { ScoreDuel } from './Rating.jsx';
 
-const EASE = [0.2, 0.8, 0.2, 1];
+/**
+ * Curva de toda la entrada de la ficha: el panel, la carátula y el
+ * desenfoque del fondo la comparten, con lo que avanzan sincronizados.
+ *
+ * Es `ease-in-out`, no el fast-out `[0.2, 0.8, 0.2, 1]` que había antes. Con
+ * fast-out la ficha recorría el 90 % de su movimiento a los 139 ms de los 350
+ * y se pasaba el resto posando, y el desenfoque estaba al 88 % a los 127 ms
+ * — es decir, saltaba y se arrastraba en vez de rampar. Medido muestreando
+ * fotograma a fotograma; con ease-in-out ambos recorren su rango de forma
+ * pareja (al 50 % del tiempo, al 47 % del recorrido).
+ */
+const EASE = 'easeInOut';
 
 function AgreementLine({ movie }) {
   if (movie.difference === null) {
@@ -77,8 +88,14 @@ function ModalContent({ movie, rank, onClose }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      {/* Fondo: click fuera para cerrar */}
-      <div className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={onClose} aria-hidden="true" />
+      {/* Fondo: click fuera para cerrar. Su desenfoque sube de forma gradual
+          en paralelo con la entrada del panel y llega al 100 % cuando el
+          panel aterriza — ver .cm-modal-backdrop en index.css. */}
+      <div
+        className="cm-modal-backdrop absolute inset-0 bg-black/75 backdrop-blur-md"
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
       <motion.div
         ref={containerRef}

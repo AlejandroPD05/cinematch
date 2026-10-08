@@ -20,6 +20,7 @@ export const TIER_OPTIONS = [
 
 export const SORT_OPTIONS = [
   { value: 'original', label: 'Orden del Sheets' },
+  { value: 'recent', label: 'Añadido recientemente' },
   { value: 'rating', label: 'Nota media' },
   { value: 'az', label: 'Nombre A-Z' },
   { value: 'za', label: 'Nombre Z-A' },
@@ -76,6 +77,10 @@ export function applyFilters(movies, filters) {
       return result.sort((a, b) => collator.compare(b.title, a.title));
     case 'rating':
       return result.sort(byAverageDesc);
+    case 'recent':
+      /* Las películas se añaden al FINAL de la hoja, así que `order` es
+         cronológico: orden inverso = lo más reciente primero. */
+      return result.sort((a, b) => b.order - a.order);
     default:
       return result.sort((a, b) => a.order - b.order);
   }
