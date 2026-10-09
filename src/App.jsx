@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { MotionConfig } from 'framer-motion';
 import AgreementSection from './components/AgreementSection.jsx';
 import CatalogSection from './components/CatalogSection.jsx';
+import ChartsSection from './components/ChartsSection.jsx';
 import ErrorState from './components/ErrorState.jsx';
 import Footer from './components/Footer.jsx';
 import Header from './components/Header.jsx';
@@ -10,9 +11,16 @@ import MovieModal from './components/MovieModal.jsx';
 import RefreshNotice from './components/RefreshNotice.jsx';
 import StatsSection from './components/StatsSection.jsx';
 import TopMovies from './components/TopMovies.jsx';
-import { APP_NAME, APP_TAGLINE, DUEL_LIMIT, TOP_LIMIT } from './config/config.js';
+import { APP_NAME, APP_TAGLINE, CHARTS, DUEL_LIMIT, TOP_LIMIT } from './config/config.js';
 import { useMovieFilters } from './hooks/useMovieFilters.js';
 import { useMovies } from './hooks/useMovies.js';
+import {
+  getFacetBreakdown,
+  getChartableFacets,
+  getRatingTimeline,
+  getScatterPoints,
+  getWatchCalendar,
+} from './utils/chartData.js';
 import { getLabels } from './utils/labels.js';
 import { getAvailableFacets } from './utils/movieFilters.js';
 import {
@@ -47,8 +55,9 @@ export default function App() {
     document.title = `${APP_NAME} | ${APP_TAGLINE}`;
   }, []);
 
-  const derived = useMemo(
-    () => ({
+  const derived = useMemo(() => {
+    const facets = getChartableFacets(movies);
+    return {
       stats: computeStats(movies),
       featured: getFeaturedMovie(movies),
       top: getTopRated(movies, TOP_LIMIT),
@@ -56,9 +65,17 @@ export default function App() {
       disagreements: getDisagreements(movies, DUEL_LIMIT),
       facets: getAvailableFacets(movies),
       hasUnrated: movies.some((m) => m.average === null),
-    }),
-    [movies],
-  );
+      charts: {
+        scatter: getScatterPoints(movies),
+        timeline: getRatingTimeline(movies, { window: CHARTS.timelineWindow }),
+        facets,
+        breakdowns: Object.fromEntries(
+          facets.map((field) => [field.key, getFacetBreakdown(movies, field.key, { topN: CHARTS.barTopN })]),
+        ),
+        calendar: getWatchCalendar(movies),
+      },
+    };
+  }, [movies]);
 
   const openMovie = useCallback((movie) => setSelected(movie), []);
   const closeMovie = useCallback(() => setSelected(null), []);
@@ -145,6 +162,7 @@ export default function App() {
                 {ready && movies.length > 0 && (
                   <>
                     <StatsSection stats={derived.stats} labels={labels} />
+                    <ChartsSection charts={derived.charts} onOpen={openMovie} labels={labels} />
                     <TopMovies movies={derived.top} onOpen={openMovie} />
                     <AgreementSection
                       agreements={derived.agreements}

@@ -1,5 +1,6 @@
 import { COLUMN_ALIASES, EXTRA_FIELDS, PEOPLE } from '../config/config.js';
 import { parseCsv } from './csv.js';
+import { parseWatchDate } from './dates.js';
 import { averageOf, parseRating, parseSeasonRatings, ratingDifference } from './ratings.js';
 import { containsPhrase, extractUrl, isUrlLike, normalizeText, slugify } from './text.js';
 
@@ -14,6 +15,7 @@ import { containsPhrase, extractUrl, isUrlLike, normalizeText, slugify } from '.
  *   seasons: [{ number, ratings: { person1, person2 } }],      // solo series con 2+ temporadas
  *   average: number | null,
  *   difference: number | null,
+ *   watchedAt: { year, month, day, iso, ts } | null,  // solo si la columna Fecha existe y es válida
  *   details: { saga?, genre?, year?, ... }   // solo si existe la columna
  *   extra: [{ label, value }]                 // TODAS las columnas adicionales con valor
  * }
@@ -197,6 +199,9 @@ function rowToMovie(row, map, order) {
     seasons,
     average: averageOf(Object.values(ratings)),
     difference: ratingDifference(ratings),
+    // Fecha vista (si la columna existe y el valor es legible). details guarda
+    // el texto crudo para la ficha; aquí va ya interpretado para las gráficas.
+    watchedAt: parseWatchDate(details.watchedAt),
     details,
     extra,
   };

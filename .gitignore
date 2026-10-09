@@ -6,3 +6,6 @@ dist
 .DS_Store
 *.log
 .vercel
+
+# Notas locales de sesión: no forman parte del proyecto publicado.
+CONTINUAR.md

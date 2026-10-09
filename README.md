@@ -180,12 +180,15 @@ src/
 │   ├── ratings.js            ← normalizar notas, medias, formato
 │   ├── statistics.js         ← estadísticas y rankings
 │   ├── movieFilters.js       ← búsqueda, filtros, orden
+│   ├── chartData.js          ← series listas para las gráficas (SVG)
+│   ├── dates.js              ← parser tolerante de la columna Fecha
 │   └── text.js
 ├── hooks/                    ← useMovies, useMovieFilters, useModalA11y
 ├── components/               ← Header, Hero, FeaturedMovie, FilterBar, MovieGrid,
 │                               MovieCard, Poster, Rating, MovieModal, StatsSection,
 │                               TopMovies, AgreementSection, SkeletonCard, EmptyState,
 │                               ErrorState, RefreshNotice, Footer…
+│   └── charts/               ← ChartCard, ScatterChart, LineChart, BarChart, Heatmap
 ├── App.jsx
 ├── main.jsx
 └── index.css                 ← tokens de color y tipografía
@@ -198,6 +201,7 @@ Modelo de cada película:
   id, order, title, poster,
   ratings: { person1, person2 },   // números o null
   average, difference,             // null si no hay datos
+  watchedAt: { year, month, day, iso, ts } | null,  // solo si existe columna Fecha
   details: { saga, genre, year },  // solo si existen esas columnas
   extra: [{ label, value }]        // todas las columnas adicionales
 }

@@ -83,3 +83,22 @@ export const AGREEMENT_THRESHOLD = 1;
 // Cuántas películas mostrar en cada ranking.
 export const TOP_LIMIT = 10;
 export const DUEL_LIMIT = 5;
+
+/* ─────────────── Gráficas ─────────────── */
+
+export const CHARTS = {
+  // Películas que abarca cada punto de la media móvil de la evolución.
+  timelineWindow: 12,
+  // Cuántas categorías muestra la gráfica de barras antes de agrupar en "Otras".
+  barTopN: 8,
+};
+
+// Aparición de cada gráfica. Desactivar una la oculta sin tocar más código.
+export const CHARTS_ENABLED = {
+  scatter: true,
+  timeline: true,
+  breakdown: true,
+  // El calendario solo tiene sentido con la columna Fecha en la hoja; se oculta
+  // solo cuando no hay fechas, así que este flag es un doble seguro.
+  calendar: true,
+};

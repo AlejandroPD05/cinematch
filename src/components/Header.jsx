@@ -8,6 +8,7 @@ const NAV = [
   { href: '#catalogo', label: 'Catálogo' },
   { href: '#top', label: 'Top' },
   { href: '#estadisticas', label: 'Estadísticas' },
+  { href: '#graficos', label: 'Gráficos' },
 ];
 
 const KINDS = [
