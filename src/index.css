@@ -122,13 +122,14 @@
  *
  *   blur desde el 1er fotograma, fijo      ~87 fps, 12 caídas  (antes)
  *   ausente 200 ms y luego salto           ~92 fps,  8 caídas  (versión previa)
- *   rampa 0→350 ms (esto)                  ~91 fps, 10 caídas  (ahora)
+ *   rampa 0→500 ms (esto)                  ~88 fps, 10 caídas  (ahora)
  *
  * El coste no va en función del radio — blur(0px) cuesta lo mismo que
  * blur(12px) — sino del tiempo que backdrop-filter existe mientras la ficha
- * se monta; por eso una rampa de 350 ms sale a precio de la versión previa
- * y una de 500 ms no (medida: 88 fps). Con aceleración por hardware, que es
- * lo normal, todo esto vale 0.
+ * se monta: 350 ms salía a precio de la versión previa (91 fps) y 500 ms se
+ * queda en 88 (medido sin aceleración; con ella todo esto vale 0). Se eligió
+ * igualmente 500 ms para que el fondo termine de desenfocarse cuando termina
+ * «el detalle» entero, carátula incluida.
  */
 /* Los prefijos -webkit- no se escriben a mano: el compilador los añade. Escribir
    ambos aquí hace que Lightning CSS deduplique dentro de los keyframes y se
@@ -144,10 +145,12 @@
 
 .cm-modal-backdrop {
   /* ease-in-out = cubic-bezier(0.42, 0, 0.58, 1), la misma curva que EASE en
-     MovieModal.jsx: el desenfoque y el panel avanzan parejos y terminan a la
-     vez. Con la curva fast-out anterior estaba al 88 % a los 127 ms de los
-     350 — saltaba y se arrastraba en vez de rampar. */
-  animation: modal-backdrop-in 350ms cubic-bezier(0.42, 0, 0.58, 1) both;
+     MovieModal.jsx: el desenfoque y la ficha avanzan parejos. Con la curva
+     fast-out anterior estaba al 88 % a los 127 ms — saltaba y se arrastraba
+     en vez de rampar. Los 500 ms los cierra la carátula (0,05 de retardo +
+     0,45 de duración): el panel aterriza antes, a los 350, y el fondo acaba
+     de desenfocarse cuando el último elemento ha entrado. */
+  animation: modal-backdrop-in 500ms cubic-bezier(0.42, 0, 0.58, 1) both;
 }
 
 /* Con movimiento reducido no hay entrada que sincronizar: se aplica el
