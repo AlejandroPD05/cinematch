@@ -1,6 +1,11 @@
-import IDS from './tmdbIds.json';
-import IDS_SERIES from './tmdbIdsSeries.json';
-import { OVERRIDES, UMBRAL, normalizar, puntuar } from './tmdbMatch.js';
+import IDS_ORIGEN from './tmdbIds.json';
+import IDS_SERIES_ORIGEN from './tmdbIdsSeries.json';
+import { OVERRIDES, UMBRAL, normalizar, normalizarClaves, puntuar } from './tmdbMatch.js';
+
+// Las claves de los JSON se normalizan al cargar para que la búsqueda no falle
+// si una entrada se añadió a mano con mayúsculas o tildes.
+const IDS = normalizarClaves(IDS_ORIGEN);
+const IDS_SERIES = normalizarClaves(IDS_SERIES_ORIGEN);
 
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 const IMG_BASE = 'https://image.tmdb.org/t/p/w500';

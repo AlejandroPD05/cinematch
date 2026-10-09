@@ -84,7 +84,7 @@ const OVERRIDES_SERIES_SIN_NORMALIZAR = {
   'solo arise': { q: 'Solo Leveling', year: 2024 },
 };
 
-const normalizarClaves = (objeto) =>
+export const normalizarClaves = (objeto) =>
   Object.fromEntries(Object.entries(objeto).map(([clave, valor]) => [normalizar(clave), valor]));
 
 // Normaliza todas las claves para que coincidan siempre con el título del Sheets.
